@@ -1,0 +1,6 @@
+{
+  "name": "حاسبة القروض - جمعية موظفي بلدية مادبا الكبرى",
+  "description": "تطبيق حاسبة القروض وإدارة طلبات السلف لجمعية موظفي بلدية مادبا الكبرى",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
