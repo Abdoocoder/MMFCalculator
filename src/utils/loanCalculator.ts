@@ -82,11 +82,8 @@ export function calculateLoan(input: CalculationInput): CalculationResult {
   };
 }
 
-export function formatJOD(value: number): string {
-  return value.toLocaleString('ar-JO', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+export function generateReferenceNo(): string {
+  return `MDB-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
 }
 
 export function formatJODNumber(value: number): string {
