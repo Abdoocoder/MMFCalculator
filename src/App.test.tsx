@@ -180,4 +180,63 @@ describe('App with Convex queries and mutations', () => {
     fireEvent.keyDown(window, { key: 'Escape' });
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
+
+  it('shows a loading state before the Convex profile arrives', () => {
+    mocks.profile = null;
+    render(<App />);
+    expect(screen.getByText(/جارٍ تحميل الملف الشخصي/)).toBeInTheDocument();
+  });
+
+  it('renders the home dashboard with profile stats and navigates via quick actions', async () => {
+    mocks.records = [
+      {
+        _id: 'rec_1',
+        referenceNo: 'MDB-2026-1001',
+        date: '2026-08-01',
+        productName: 'مرابحة الأجهزة الكهربائية والإلكترونية',
+        loanAmount: 500,
+        netIncome: 200,
+        durationYears: 1,
+        monthlyInstallment: 48.16,
+        totalWithInsurance: 577.88,
+        status: 'pending',
+        notes: undefined,
+        resultSnapshot: null,
+      },
+      {
+        _id: 'rec_2',
+        referenceNo: 'MDB-2026-1002',
+        date: '2026-08-02',
+        productName: 'مرابحة الأثاث المنزلي',
+        loanAmount: 750,
+        netIncome: 300,
+        durationYears: 2,
+        monthlyInstallment: 40.5,
+        totalWithInsurance: 972.0,
+        status: 'approved',
+        notes: undefined,
+        resultSnapshot: null,
+      },
+    ];
+
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getAllByRole('button', { name: 'الرئيسية' })[0]);
+
+    expect(screen.getByText('أهلاً بك، أحمد محمود الشوابكة')).toBeInTheDocument();
+    expect(screen.getAllByText('MDB-1001').length).toBeGreaterThan(0);
+    expect(screen.getByText('850.00 د.أ')).toBeInTheDocument();
+    expect(screen.getByText('1 طلب')).toBeInTheDocument();
+    expect(screen.getByText('1 سلفة')).toBeInTheDocument();
+    expect(screen.getByText('إعلانات وتعليمات الجمعية')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'ابدأ حاسبة المرابحة' }));
+    expect(screen.getByText(/نسبة الربح المعتمدة/)).toBeInTheDocument();
+
+    await user.click(screen.getAllByRole('button', { name: 'الرئيسية' })[0]);
+    await user.click(screen.getByRole('button', { name: /استعراض السجلات والطلبات/ }));
+    expect(screen.getByText('سجل الطلبات والحسبات المحفوظة')).toBeInTheDocument();
+    expect(screen.getByText('MDB-2026-1001')).toBeInTheDocument();
+    expect(screen.getByText('750.00 د.أ')).toBeInTheDocument();
+  });
 });
