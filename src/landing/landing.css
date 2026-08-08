@@ -1,0 +1,75 @@
+/* Landing surface — Financing Notation world.
+   Deep-blue field, star lattice, tabular numerals, ledger hairlines. */
+
+.landing-field {
+  background-color: #062a4a;
+  background-image:
+    radial-gradient(120% 90% at 50% 0%, rgba(35, 99, 154, 0.55) 0%, rgba(6, 42, 74, 0) 55%),
+    linear-gradient(180deg, #0a3a66 0%, #062a4a 60%, #041d33 100%);
+}
+
+.landing-field-alt {
+  background-color: #0f4c81;
+  background-image:
+    radial-gradient(120% 100% at 50% 0%, rgba(149, 204, 255, 0.18) 0%, rgba(15, 76, 129, 0) 60%),
+    linear-gradient(180deg, #0f4c81 0%, #0a3a66 100%);
+}
+
+.landing-ink {
+  color: #eff1f3;
+}
+
+.landing-ink-soft {
+  color: rgba(239, 241, 243, 0.78);
+}
+
+.landing-hairline {
+  border-color: rgba(239, 241, 243, 0.16);
+}
+
+.landing-hairline-strong {
+  border-color: rgba(239, 241, 243, 0.32);
+}
+
+/* Tabular numerals — the language of the notation world. */
+.landing-figures {
+  font-family: 'JetBrains Mono', 'Be Vietnam Pro', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.landing-figures-sm {
+  font-family: 'JetBrains Mono', 'Be Vietnam Pro', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  font-size: 0.8125rem;
+}
+
+/* Reveal on scroll — one authored moment, disabled under reduced motion. */
+.landing-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.landing-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Certified star seal transition — fills teal when a term is certified. */
+.landing-seal {
+  transition:
+    fill 0.4s ease,
+    stroke 0.4s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
