@@ -5,16 +5,24 @@ import LandingGate from './LandingGate';
 const authMocks = vi.hoisted(() => ({
   isLoaded: true,
   isSignedIn: true,
-  profile: { _id: "mem_1", userId: "user_1" } as { _id: string; userId: string } | null,
+  profile: null as Record<string, unknown> | null,
+  records: [] as unknown[],
 }));
 
 vi.mock('@clerk/clerk-react', () => ({
   useAuth: () => ({ isLoaded: authMocks.isLoaded, isSignedIn: authMocks.isSignedIn }),
 }));
 
-vi.mock('convex/react', () => ({
-  useQuery: () => authMocks.profile,
-}));
+vi.mock('convex/react', async () => {
+  const { getFunctionName } = await import('convex/server');
+  return {
+    useQuery: (ref: any) => {
+      if (getFunctionName(ref) === 'loanRecords:listMy') return authMocks.records;
+      return authMocks.profile;
+    },
+    useMutation: () => vi.fn(),
+  };
+});
 
 vi.mock('../auth/SignInScreen', () => ({
   default: () => <div data-testid="sign-in-screen" />,
@@ -41,7 +49,22 @@ beforeEach(() => {
   window.location.hash = '';
   authMocks.isLoaded = true;
   authMocks.isSignedIn = true;
-  authMocks.profile = { _id: "mem_1", userId: "user_1" };
+  authMocks.records = [];
+  authMocks.profile = {
+    _id: "mem_1",
+    userId: "user_1",
+    membershipNo: "MDB-1001",
+    fullName: "أحمد محمود الشوابكة",
+    nationalId: "9876543210",
+    department: "قسم الحاسوب",
+    jobTitle: "مطور برمجيات",
+    netSalary: 850,
+    currentDeductions: 120,
+    phone: "0791112223",
+    joinDate: "2020-03-15",
+    activeLoanCount: 1,
+    totalLoansPaid: 0,
+  };
   vi.stubGlobal('matchMedia', matchMediaMock);
   vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
 });

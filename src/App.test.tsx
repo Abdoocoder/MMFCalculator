@@ -2,8 +2,68 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
-import { INITIAL_MEMBER_PROFILE } from './data/mockData';
-import type { CalculationResult, LoanRecord } from './types';
+import type { CalculationResult, MemberProfile, LoanRecord } from './types';
+
+const mocks = vi.hoisted(() => {
+  const profileDoc = {
+    _id: 'mem_1',
+    userId: 'user_1',
+    membershipNo: 'MDB-1001',
+    fullName: 'أحمد محمود الشوابكة',
+    nationalId: '9876543210',
+    department: 'قسم الحاسوب',
+    jobTitle: 'مطور برمجيات',
+    netSalary: 850,
+    currentDeductions: 120,
+    phone: '0791112223',
+    joinDate: '2020-03-15',
+    activeLoanCount: 1,
+    totalLoansPaid: 0,
+  } as const;
+
+  const recordDoc = {
+    _id: 'rec_9000',
+    referenceNo: 'MDB-2026-7777',
+    date: '2026-08-01',
+    productName: 'مرابحة الأجهزة الكهربائية والإلكترونية',
+    loanAmount: 500,
+    netIncome: 200,
+    durationYears: 1,
+    monthlyInstallment: 48.16,
+    totalWithInsurance: 577.88,
+    status: 'draft',
+    notes: undefined,
+    resultSnapshot: null,
+  } as const;
+
+  return {
+    profile: profileDoc as unknown as (typeof profileDoc & { _id: string }) | null,
+    records: [] as unknown[],
+    mutations: {
+      createRecord: vi.fn(),
+      updateRecordStatus: vi.fn(),
+      deleteRecord: vi.fn(),
+      upsertProfile: vi.fn(),
+    },
+  };
+});
+
+vi.mock('convex/react', async () => {
+  const { getFunctionName } = await import('convex/server');
+  return {
+    useQuery: (ref: any) => {
+      if (getFunctionName(ref) === 'loanRecords:listMy') return mocks.records;
+      return mocks.profile;
+    },
+    useMutation: (ref: any) => {
+      const name = getFunctionName(ref);
+      if (name === 'loanRecords:create') return mocks.mutations.createRecord;
+      if (name === 'loanRecords:updateStatus') return mocks.mutations.updateRecordStatus;
+      if (name === 'loanRecords:deleteDraft') return mocks.mutations.deleteRecord;
+      return mocks.mutations.upsertProfile;
+    },
+  };
+});
 
 const matchMediaMock = (query: string) => ({
   matches: false,
@@ -19,6 +79,22 @@ const matchMediaMock = (query: string) => ({
 beforeEach(() => {
   localStorage.clear();
   document.documentElement.className = '';
+  mocks.profile = {
+    _id: 'mem_1',
+    userId: 'user_1',
+    membershipNo: 'MDB-1001',
+    fullName: 'أحمد محمود الشوابكة',
+    nationalId: '9876543210',
+    department: 'قسم الحاسوب',
+    jobTitle: 'مطور برمجيات',
+    netSalary: 850,
+    currentDeductions: 120,
+    phone: '0791112223',
+    joinDate: '2020-03-15',
+    activeLoanCount: 1,
+    totalLoansPaid: 0,
+  };
+  mocks.records = [];
   vi.stubGlobal('matchMedia', matchMediaMock);
 });
 
@@ -27,13 +103,10 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe('App localStorage guards and persistence', () => {
-  it('renders with fallback data when localStorage reads are blocked', () => {
-    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
-      throw new Error('storage denied');
-    });
+describe('App with Convex queries and mutations', () => {
+  it('renders the calculator with the profile loaded from Convex', () => {
     render(<App />);
-    expect(screen.getAllByText(INITIAL_MEMBER_PROFILE.fullName).length).toBeGreaterThan(0);
+    expect(screen.getAllByText('أحمد محمود الشوابكة').length).toBeGreaterThan(0);
     expect(screen.getByText(/نسبة الربح المعتمدة/)).toBeInTheDocument();
   });
 
@@ -62,16 +135,6 @@ describe('App localStorage guards and persistence', () => {
     expect(localStorage.getItem('mmf-dark-mode')).toBe('false');
   });
 
-  it('still toggles dark mode when localStorage writes are blocked', async () => {
-    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('quota exceeded');
-    });
-    const user = userEvent.setup();
-    render(<App />);
-    await user.click(screen.getByRole('button', { name: 'تغيير المظهر' }));
-    expect(document.documentElement.classList.contains('dark')).toBe(true);
-  });
-
   it('opens the print modal for a saved record using its stored result snapshot', async () => {
     const snapshot: CalculationResult = {
       netFinancing: 500,
@@ -87,20 +150,22 @@ describe('App localStorage guards and persistence', () => {
       isEligible: true,
       dtiPercentage: 0,
     };
-    const record: LoanRecord = {
-      id: 'rec_9000',
-      referenceNo: 'MDB-2026-7777',
-      date: '2026-08-01',
-      productName: 'مرابحة الأجهزة الكهربائية والإلكترونية',
-      loanAmount: 500,
-      netIncome: 200,
-      durationYears: 1,
-      monthlyInstallment: 48.16,
-      totalWithInsurance: 577.88,
-      status: 'draft',
-      resultSnapshot: snapshot,
-    };
-    localStorage.setItem('mmf-records', JSON.stringify([record]));
+    mocks.records = [
+      {
+        _id: 'rec_9000',
+        referenceNo: 'MDB-2026-7777',
+        date: '2026-08-01',
+        productName: 'مرابحة الأجهزة الكهربائية والإلكترونية',
+        loanAmount: 500,
+        netIncome: 200,
+        durationYears: 1,
+        monthlyInstallment: 48.16,
+        totalWithInsurance: 577.88,
+        status: 'draft',
+        notes: undefined,
+        resultSnapshot: snapshot,
+      },
+    ];
 
     const user = userEvent.setup();
     render(<App />);

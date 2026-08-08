@@ -4,6 +4,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { useMutation, useQuery } from 'convex/react';
+import { api } from '../convex/_generated/api';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { BottomNav } from './components/BottomNav';
@@ -13,77 +15,114 @@ import { ApplicationsHistory } from './components/ApplicationsHistory';
 import { ProfileSettings } from './components/ProfileSettings';
 import { PrintVoucherModal } from './components/PrintVoucherModal';
 import { MemberProfile, LoanRecord, CalculationInput, CalculationResult } from './types';
-import { INITIAL_MEMBER_PROFILE, INITIAL_LOAN_RECORDS } from './data/mockData';
 import { calculateLoan, LOAN_PRODUCTS } from './utils/loanCalculator';
-
-const loadState = <T,>(key: string, fallback: T): T => {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
-  }
-};
-
-const saveState = (key: string, value: unknown): void => {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    /* storage blocked (private mode / partitioned iframe) — fail silently */
-  }
-};
-
-const loadRawState = (key: string): string | null => {
-  try {
-    return localStorage.getItem(key);
-  } catch {
-    return null;
-  }
-};
+import { Doc } from '../convex/_generated/dataModel';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('calculator');
   const [darkMode, setDarkMode] = useState<boolean>(() => {
-    const stored = loadRawState('mmf-dark-mode');
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem('mmf-dark-mode');
+    } catch {
+      stored = null;
+    }
     return stored !== null
       ? stored === 'true'
       : window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
-  const [profile, setProfile] = useState<MemberProfile>(() =>
-    loadState('mmf-profile', INITIAL_MEMBER_PROFILE)
-  );
-  const [records, setRecords] = useState<LoanRecord[]>(() =>
-    loadState('mmf-records', INITIAL_LOAN_RECORDS)
-  );
+
+  const profileDoc: Doc<'members'> | null | undefined = useQuery(api.members.getMyProfile);
+  const recordDocs: Doc<'loanRecords'>[] = useQuery(api.loanRecords.listMy) ?? [];
+
+  const profile: MemberProfile | null = profileDoc
+    ? {
+        id: profileDoc._id,
+        membershipNo: profileDoc.membershipNo,
+        fullName: profileDoc.fullName,
+        nationalId: profileDoc.nationalId,
+        department: profileDoc.department,
+        jobTitle: profileDoc.jobTitle,
+        netSalary: profileDoc.netSalary,
+        currentDeductions: profileDoc.currentDeductions,
+        phone: profileDoc.phone,
+        joinDate: profileDoc.joinDate,
+        activeLoanCount: profileDoc.activeLoanCount,
+        totalLoansPaid: profileDoc.totalLoansPaid,
+      }
+    : null;
+
+  const records: LoanRecord[] = recordDocs.map((doc) => ({
+    id: doc._id,
+    referenceNo: doc.referenceNo,
+    date: doc.date,
+    productName: doc.productName,
+    loanAmount: doc.loanAmount,
+    netIncome: doc.netIncome,
+    durationYears: doc.durationYears,
+    monthlyInstallment: doc.monthlyInstallment,
+    totalWithInsurance: doc.totalWithInsurance,
+    status: doc.status,
+    notes: doc.notes,
+    resultSnapshot: doc.resultSnapshot,
+  }));
+
+  const createRecord = useMutation(api.loanRecords.create);
+  const updateRecordStatus = useMutation(api.loanRecords.updateStatus);
+  const deleteRecord = useMutation(api.loanRecords.deleteDraft);
+  const upsertProfile = useMutation(api.members.upsertMyProfile);
 
   // Selected record for direct printing modal
   const [printModalRecord, setPrintModalRecord] = useState<LoanRecord | null>(null);
 
-  // Synchronize dark mode class on HTML root and persist it
+  // Synchronize dark mode class on HTML root and persist it (local preference only)
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
-    saveState('mmf-dark-mode', darkMode);
+    try {
+      localStorage.setItem('mmf-dark-mode', String(darkMode));
+    } catch {
+      /* storage blocked — fail silently */
+    }
   }, [darkMode]);
 
-  // Persist profile and records
-  useEffect(() => {
-    saveState('mmf-profile', profile);
-  }, [profile]);
-
-  useEffect(() => {
-    saveState('mmf-records', records);
-  }, [records]);
-
-  const handleSaveRecord = (newRecord: LoanRecord) => {
-    setRecords(prev => [newRecord, ...prev]);
+  const handleSaveRecord = async (newRecord: LoanRecord) => {
+    await createRecord({
+      record: {
+        referenceNo: newRecord.referenceNo,
+        date: newRecord.date,
+        productName: newRecord.productName,
+        loanAmount: newRecord.loanAmount,
+        netIncome: newRecord.netIncome,
+        durationYears: newRecord.durationYears,
+        monthlyInstallment: newRecord.monthlyInstallment,
+        totalWithInsurance: newRecord.totalWithInsurance,
+        status: newRecord.status,
+        notes: newRecord.notes,
+        resultSnapshot: newRecord.resultSnapshot,
+      },
+    });
   };
 
-  const handleDeleteRecord = (id: string) => {
-    setRecords(prev => prev.filter(r => r.id !== id));
+  const handleDeleteRecord = async (id: string) => {
+    await deleteRecord({ id });
   };
 
-  const handleUpdateProfile = (updatedProfile: MemberProfile) => {
-    setProfile(updatedProfile);
+  const handleUpdateProfile = async (updatedProfile: MemberProfile) => {
+    await upsertProfile({
+      profile: {
+        membershipNo: updatedProfile.membershipNo,
+        fullName: updatedProfile.fullName,
+        nationalId: updatedProfile.nationalId,
+        department: updatedProfile.department,
+        jobTitle: updatedProfile.jobTitle,
+        netSalary: updatedProfile.netSalary,
+        currentDeductions: updatedProfile.currentDeductions,
+        phone: updatedProfile.phone,
+        joinDate: updatedProfile.joinDate,
+        activeLoanCount: updatedProfile.activeLoanCount,
+        totalLoansPaid: updatedProfile.totalLoansPaid,
+      },
+    });
   };
 
   // Convert a saved LoanRecord into temporary CalculationInput & CalculationResult for PrintVoucherModal.
@@ -102,6 +141,14 @@ export default function App() {
   };
 
   const printData = printModalRecord ? preparePrintData(printModalRecord) : null;
+
+  if (!profile) {
+    return (
+      <div className="bg-canvas dark:bg-canvas-dark text-ink dark:text-ink-light min-h-screen flex items-center justify-center transition-colors font-tajawal">
+        <p className="text-ink-soft dark:text-gray-400">جارٍ تحميل الملف الشخصي…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-canvas dark:bg-canvas-dark text-ink dark:text-ink-light min-h-screen flex flex-col transition-colors font-tajawal">
