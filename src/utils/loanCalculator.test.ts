@@ -68,6 +68,28 @@ describe('calculateLoan', () => {
     expect(r.maxInstallment).toBe(0);
     expect(r.isEligible).toBe(false);
   });
+
+  it('clamps NaN inputs to zero', () => {
+    const r = calculateLoan({
+      productId: 'appliances',
+      loanAmount: NaN,
+      netIncome: NaN,
+      currentDeductions: NaN,
+      durationYears: NaN,
+    });
+    expect(r.netFinancing).toBe(0);
+    expect(r.maxInstallment).toBe(0);
+    expect(r.totalWithInsurance).toBe(0);
+    expect(r.monthlyInstallment).toBe(0);
+    expect(r.isEligible).toBe(false);
+  });
+
+  it('reports a dtiPercentage of 0 when net income is zero', () => {
+    const r = calculateLoan({ ...baseInput, netIncome: 0 });
+    expect(r.dtiPercentage).toBe(0);
+    expect(r.maxInstallment).toBe(0);
+    expect(r.isEligible).toBe(false);
+  });
 });
 
 describe('generateReferenceNo', () => {
