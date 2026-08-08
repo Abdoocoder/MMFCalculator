@@ -14,25 +14,65 @@ import { ProfileSettings } from './components/ProfileSettings';
 import { PrintVoucherModal } from './components/PrintVoucherModal';
 import { MemberProfile, LoanRecord, CalculationInput, CalculationResult } from './types';
 import { INITIAL_MEMBER_PROFILE, INITIAL_LOAN_RECORDS } from './data/mockData';
-import { calculateLoan } from './utils/loanCalculator';
+import { calculateLoan, LOAN_PRODUCTS } from './utils/loanCalculator';
+
+const loadState = <T,>(key: string, fallback: T): T => {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+const saveState = (key: string, value: unknown): void => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* storage blocked (private mode / partitioned iframe) — fail silently */
+  }
+};
+
+const loadRawState = (key: string): string | null => {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+};
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('calculator');
-  const [darkMode, setDarkMode] = useState<boolean>(false);
-  const [profile, setProfile] = useState<MemberProfile>(INITIAL_MEMBER_PROFILE);
-  const [records, setRecords] = useState<LoanRecord[]>(INITIAL_LOAN_RECORDS);
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    const stored = loadRawState('mmf-dark-mode');
+    return stored !== null
+      ? stored === 'true'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+  const [profile, setProfile] = useState<MemberProfile>(() =>
+    loadState('mmf-profile', INITIAL_MEMBER_PROFILE)
+  );
+  const [records, setRecords] = useState<LoanRecord[]>(() =>
+    loadState('mmf-records', INITIAL_LOAN_RECORDS)
+  );
 
   // Selected record for direct printing modal
   const [printModalRecord, setPrintModalRecord] = useState<LoanRecord | null>(null);
 
-  // Synchronize dark mode class on HTML body
+  // Synchronize dark mode class on HTML root and persist it
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', darkMode);
+    saveState('mmf-dark-mode', darkMode);
   }, [darkMode]);
+
+  // Persist profile and records
+  useEffect(() => {
+    saveState('mmf-profile', profile);
+  }, [profile]);
+
+  useEffect(() => {
+    saveState('mmf-records', records);
+  }, [records]);
 
   const handleSaveRecord = (newRecord: LoanRecord) => {
     setRecords(prev => [newRecord, ...prev]);
@@ -46,21 +86,25 @@ export default function App() {
     setProfile(updatedProfile);
   };
 
-  // Convert a saved LoanRecord into temporary CalculationInput & CalculationResult for PrintVoucherModal
+  // Convert a saved LoanRecord into temporary CalculationInput & CalculationResult for PrintVoucherModal.
+  // Prefer the stored result snapshot so the voucher reflects the exact calculation that was saved;
+  // fall back to a fresh calculation only for legacy records saved without a snapshot.
   const preparePrintData = (rec: LoanRecord) => {
     const input: CalculationInput = {
-      productId: 'personal',
+      productId: LOAN_PRODUCTS[0].id,
       loanAmount: rec.loanAmount,
       netIncome: rec.netIncome,
       currentDeductions: 0,
       durationYears: rec.durationYears
     };
-    const result: CalculationResult = calculateLoan(input);
+    const result: CalculationResult = rec.resultSnapshot ?? calculateLoan(input);
     return { input, result };
   };
 
+  const printData = printModalRecord ? preparePrintData(printModalRecord) : null;
+
   return (
-    <div className="bg-[#f7f9fb] dark:bg-[#121619] text-[#191c1e] dark:text-[#eff1f3] min-h-screen flex flex-col transition-colors font-tajawal">
+    <div className="bg-canvas dark:bg-canvas-dark text-ink dark:text-ink-light min-h-screen flex flex-col transition-colors font-tajawal">
       
       {/* Top Navigation Header */}
       <Header
@@ -123,7 +167,7 @@ export default function App() {
       />
 
       {/* Footer for Desktop */}
-      <footer className="bg-white dark:bg-[#121619] border-t border-gray-200 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400 py-5 mt-auto hidden md:block no-print">
+      <footer className="bg-white dark:bg-canvas-dark border-t border-gray-200 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400 py-5 mt-auto hidden md:block no-print">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row-reverse justify-between items-center gap-4 md:pr-72">
           <span>© 2026 جمعية موظفي بلدية مادبا الكبرى - جميع الحقوق محفوظة</span>
           <div className="flex items-center gap-6">
@@ -133,7 +177,7 @@ export default function App() {
                 href="https://www.abdoocoder.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-bold text-[#0f4c81] dark:text-[#95ccff] hover:underline"
+                className="font-bold text-primary dark:text-primary-soft hover:underline"
               >
                 Abdoo Coder
               </a>
@@ -143,27 +187,28 @@ export default function App() {
       </footer>
 
       {/* Mobile Footer Credit */}
-      <div className="block md:hidden text-center py-3 text-xs text-gray-500 dark:text-gray-400 bg-white/80 dark:bg-[#121619]/80 border-t border-gray-200 dark:border-gray-800 mb-16 no-print">
+      <div className="block md:hidden text-center py-3 text-xs text-gray-500 dark:text-gray-400 bg-white/80 dark:bg-canvas-dark/80 border-t border-gray-200 dark:border-gray-800 mb-16 no-print">
         تصميم وتطوير بواسطة{' '}
         <a
           href="https://www.abdoocoder.dev/"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-bold text-[#0f4c81] dark:text-[#95ccff] hover:underline"
+          className="font-bold text-primary dark:text-primary-soft hover:underline"
         >
           Abdoo Coder
         </a>
       </div>
 
       {/* Modal for printing saved records */}
-      {printModalRecord && (
+      {printModalRecord && printData && (
         <PrintVoucherModal
-          isOpen={!!printModalRecord}
+          isOpen
           onClose={() => setPrintModalRecord(null)}
-          input={preparePrintData(printModalRecord).input}
-          result={preparePrintData(printModalRecord).result}
+          input={printData.input}
+          result={printData.result}
           profile={profile}
           productName={printModalRecord.productName}
+          referenceNo={printModalRecord.referenceNo}
         />
       )}
 
