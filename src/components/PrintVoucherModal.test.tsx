@@ -102,6 +102,25 @@ describe('PrintVoucherModal', () => {
     expect(first).toHaveFocus();
   });
 
+  it('traps the initial Shift+Tab from the dialog root (focus lands there on open)', () => {
+    renderModal();
+    const buttons = screen.getAllByRole('button');
+    const first = buttons[0];
+    const last = buttons[buttons.length - 1];
+
+    const dialog = document.querySelector('[role="dialog"]') as HTMLElement;
+    expect(dialog).not.toBeNull();
+    dialog.focus();
+    expect(dialog).toHaveFocus();
+
+    fireEvent.keyDown(window, { key: 'Tab', shiftKey: true });
+    expect(last).toHaveFocus();
+
+    dialog.focus();
+    fireEvent.keyDown(window, { key: 'Tab' });
+    expect(first).toHaveFocus();
+  });
+
   it('restores focus to the previously focused element on close', () => {
     const { props, utils } = renderModal({ isOpen: false });
     const trigger = document.createElement('button');
