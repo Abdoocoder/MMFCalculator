@@ -15,6 +15,13 @@
 ## Testing
 - **Priority:** P3 — Add component tests for HomeDashboard and Sidebar (currently covered only indirectly).
 
+## Hardening (pre-landing review 2026-08-08)
+- **Priority:** P2 — Add uniqueness check or timestamp component to `generateReferenceNo()` (4-digit random has ~40% collision chance at scale).
+- **Priority:** P2 — Validate shape of parsed localStorage values in `loadState` (e.g. `Array.isArray` for records) so malformed-but-valid JSON can't blank the app.
+- **Priority:** P3 — Review print CSS scope (`body > *:not(.print-modal-root)`) for plain page-level printing regression.
+- **Priority:** P3 — Store `currentDeductions` + product id on `LoanRecord` so snapshot-less recompute is consistent.
+- **Priority:** P3 — Review PII-at-rest surface (national ID, phone, salary in plaintext localStorage).
+
 ## Completed
 - **Priority:** P0 — Print voucher modal with accessible focus trap. **Completed:** v0.1.0.0 (2026-08-08)
 - **Priority:** P0 — Persist member profile, saved applications, and dark-mode preference. **Completed:** v0.1.0.0 (2026-08-08)
