@@ -17,18 +17,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, profi
   ];
 
   return (
-    <nav className="hidden md:flex flex-col rtl bg-white dark:bg-[#121619] text-[#34645d] dark:text-[#bcebe5] h-screen w-72 fixed right-0 top-0 z-30 border-l border-[#c2c7ca] dark:border-gray-800 shadow-md pt-16 transition-colors">
-      <div className="p-5 border-b border-[#c2c7ca] dark:border-gray-800 bg-[#f7f9fb] dark:bg-[#1a1e22]">
+    <nav className="hidden md:flex flex-col rtl bg-white dark:bg-canvas-dark text-teal dark:text-teal-light h-screen w-72 fixed right-0 top-0 z-30 border-l border-line dark:border-gray-800 shadow-md pt-16 transition-colors">
+      <div className="p-5 border-b border-line dark:border-gray-800 bg-canvas dark:bg-surface-deep">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-[#0f4c81]/10 text-[#0f4c81] dark:text-[#95ccff] rounded-xl">
+          <div className="p-2.5 bg-primary/10 text-primary dark:text-primary-soft rounded-xl">
             <Building2 className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="font-bold text-[#0f4c81] dark:text-[#95ccff] text-base leading-tight">
+            <h3 className="font-bold text-primary dark:text-primary-soft text-base leading-tight">
               {profile.fullName}
             </h3>
-            <p className="text-xs text-[#434749] dark:text-gray-400 mt-1">
-              رقم العضوية: <span className="font-mono font-bold text-[#0f4c81] dark:text-[#95ccff]">{profile.membershipNo}</span>
+            <p className="text-xs text-ink-soft dark:text-gray-400 mt-1">
+              رقم العضوية: <span className="font-mono font-bold text-primary dark:text-primary-soft">{profile.membershipNo}</span>
             </p>
           </div>
         </div>
@@ -44,11 +44,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, profi
                 onClick={() => setActiveTab(item.id)}
                 className={`w-full flex items-center gap-4 px-6 py-3.5 transition-all duration-200 cursor-pointer text-right ${
                   isActive
-                    ? 'bg-[#bcebe5] dark:bg-[#23639a]/30 text-[#0f4c81] dark:text-[#95ccff] font-bold border-r-4 border-[#0f4c81] dark:border-[#95ccff]'
-                    : 'text-[#434749] dark:text-gray-300 hover:bg-[#f2f4f6] dark:hover:bg-gray-800'
+                    ? 'bg-teal-light dark:bg-primary-light/30 text-primary dark:text-primary-soft font-bold'
+                    : 'text-ink-soft dark:text-gray-300 hover:bg-mist dark:hover:bg-gray-800'
                 }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-[#0f4c81] dark:text-[#95ccff]' : 'text-gray-500'}`} />
+                <Icon className={`w-5 h-5 ${isActive ? 'text-primary dark:text-primary-soft' : 'text-gray-500'}`} />
                 <span className="text-base">{item.label}</span>
               </button>
             </li>
@@ -56,9 +56,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, profi
         })}
       </ul>
 
-      <div className="p-4 m-4 bg-[#f2f4f6] dark:bg-gray-800/60 rounded-xl border border-[#c2c7ca]/60 dark:border-gray-700/50">
-        <div className="flex items-start gap-2.5 text-xs text-[#434749] dark:text-gray-300">
-          <Info className="w-4 h-4 text-[#0f4c81] dark:text-[#95ccff] shrink-0 mt-0.5" />
+      <div className="p-4 m-4 bg-mist dark:bg-gray-800/60 rounded-xl border border-line/60 dark:border-gray-700/50">
+        <div className="flex items-start gap-2.5 text-xs text-ink-soft dark:text-gray-300">
+          <Info className="w-4 h-4 text-primary dark:text-primary-soft shrink-0 mt-0.5" />
           <p className="leading-relaxed">
             لأي استفسارات بخصوص تمويلات المرابحة الإسلامية، يرجى التواصل مع الدائرة المالية في الجمعية.
           </p>

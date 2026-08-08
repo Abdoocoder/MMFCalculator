@@ -1,27 +1,114 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: the app toggles `.dark` on <html>. Tailwind v4 defaults
+   dark: to prefers-color-scheme, so we must override it or the toggle does nothing. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Brand tokens (Greater Madaba Municipality Employees Association) */
+  --color-primary: #0f4c81;
+  --color-primary-light: #23639a;
+  --color-primary-hover: #00355f;
+  --color-primary-soft: #95ccff;
+  --color-teal: #34645d;
+  --color-teal-light: #bcebe5;
+
+  /* Neutral surface tokens */
+  --color-canvas: #f7f9fb;
+  --color-canvas-dark: #121619;
+  --color-surface-dark: #191c1e;
+  --color-surface-deep: #1a1e22;
+  --color-line: #c2c7ca;
+  --color-ink: #191c1e;
+  --color-ink-light: #eff1f3;
+  --color-ink-soft: #434749;
+  --color-mist: #f2f4f6;
+
+  /* Fade-in toast animation */
+  --animate-fade-in: fade-in 0.3s ease-out;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 @layer base {
   body {
     font-family: 'Tajawal', 'Be Vietnam Pro', system-ui, sans-serif;
+  }
+
+  /* Visible keyboard focus for interactive elements */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Primary blue #0f4c81 is invisible against the dark canvas; switch the
+     focus ring to the lighter primary-soft token in dark mode. */
+  .dark :focus-visible {
+    outline-color: var(--color-primary-soft);
+  }
+
+  /* Respect users who ask for reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
 /* Custom Print Styles */
 @media print {
+  html,
   body {
     background-color: white !important;
     color: black !important;
   }
-  .no-print {
+
+  /* Hide the entire app; the voucher is portaled to <body> so it survives. */
+  body > *:not(.print-modal-root) {
     display: none !important;
   }
-  .print-only {
+
+  /* Neutralize the modal overlay + card so the voucher flows unpaginated
+     instead of being clipped inside the fixed/overflow ancestor chain. */
+  body > .print-modal-root {
+    position: static !important;
     display: block !important;
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
   }
-  .print-card {
-    border: 1px solid #ccc !important;
+
+  body > .print-modal-root > div {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
     box-shadow: none !important;
-    break-inside: avoid;
+    border: none !important;
+    overflow: visible !important;
+  }
+
+  #printable-voucher {
+    position: static !important;
+  }
+
+  .no-print {
+    display: none !important;
   }
 }
 

@@ -41,6 +41,7 @@ export interface LoanRecord {
   status: 'draft' | 'pending' | 'approved' | 'rejected';
   referenceNo: string;
   notes?: string;
+  resultSnapshot?: CalculationResult;
 }
 
 export interface MemberProfile {

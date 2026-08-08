@@ -37,8 +37,8 @@ export const INITIAL_LOAN_RECORDS: LoanRecord[] = [
     loanAmount: 1200,
     netIncome: 350,
     durationYears: 2,
-    monthlyInstallment: 60.10,
-    totalWithInsurance: 1442.40,
+    monthlyInstallment: 65.65,
+    totalWithInsurance: 1575.60,
     status: 'pending',
     notes: 'قيد التدقيق لدى القسم المالي'
   }

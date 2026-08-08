@@ -16,16 +16,16 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenSettings
 }) => {
   return (
-    <header className="bg-[#f7f9fb] dark:bg-[#191c1e] text-[#191c1e] dark:text-[#eff1f3] w-full top-0 sticky border-b border-[#c2c7ca] dark:border-gray-800 shadow-xs flex flex-row-reverse justify-between items-center px-4 sm:px-6 h-16 z-40 transition-colors">
+    <header className="bg-canvas dark:bg-surface-dark text-ink dark:text-ink-light w-full top-0 sticky border-b border-line dark:border-gray-800 shadow-xs flex flex-row-reverse justify-between items-center px-4 sm:px-6 h-16 z-40 transition-colors">
       <div className="flex items-center gap-3 flex-row-reverse">
-        <div className="w-10 h-10 rounded-full bg-[#0f4c81] text-white flex items-center justify-center font-bold text-lg shadow-xs">
+        <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg shadow-xs">
           م
         </div>
         <div className="flex flex-col text-right">
-          <span className="font-bold text-base sm:text-lg text-[#0f4c81] dark:text-[#95ccff] leading-snug">
+          <span className="font-bold text-base sm:text-lg text-primary dark:text-primary-soft leading-snug">
             جمعية موظفي بلدية مادبا الكبرى
           </span>
-          <span className="text-xs text-[#434749] dark:text-gray-400 font-medium">
+          <span className="text-xs text-ink-soft dark:text-gray-400 font-medium">
             نظام حاسبة المرابحة الإسلامية والخدمات الإلكترونية
           </span>
         </div>
@@ -34,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="flex items-center gap-2">
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className="p-2 rounded-lg text-[#434749] dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+          className="w-11 h-11 flex items-center justify-center rounded-lg text-ink-soft dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors cursor-pointer"
           title={darkMode ? 'الوضع النهاري' : 'الوضع الليلي'}
           aria-label="تغيير المظهر"
         >
@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         <button
           onClick={onOpenSettings}
-          className="p-2 rounded-lg text-[#434749] dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors cursor-pointer active:scale-95"
+          className="w-11 h-11 flex items-center justify-center rounded-lg text-ink-soft dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors cursor-pointer active:scale-95"
           title="الإعدادات والملف الشخصي"
           aria-label="الإعدادات"
         >

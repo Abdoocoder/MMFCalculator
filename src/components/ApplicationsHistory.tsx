@@ -56,12 +56,12 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
     <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6">
       
       {/* Title & Filter bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#191c1e] p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-xs">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-surface-dark p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-xs">
         <div>
-          <h2 className="text-xl font-bold text-[#0f4c81] dark:text-[#95ccff] flex items-center gap-2">
+          <h1 className="text-xl font-bold text-primary dark:text-primary-soft flex items-center gap-2">
             <FileText className="w-6 h-6" />
             <span>سجل الطلبات والحسبات المحفوظة</span>
-          </h2>
+          </h1>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             استعرض الطلبات المقدمة للجمعية والحسبات المحفوظة مسبقاً
           </p>
@@ -71,9 +71,10 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
         <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto">
           <button
             onClick={() => setFilter('all')}
-            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+            aria-pressed={filter === 'all'}
+            className={`px-3 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               filter === 'all'
-                ? 'bg-white dark:bg-gray-700 text-[#0f4c81] dark:text-white shadow-xs'
+                ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
@@ -81,9 +82,10 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
           </button>
           <button
             onClick={() => setFilter('pending')}
-            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+            aria-pressed={filter === 'pending'}
+            className={`px-3 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               filter === 'pending'
-                ? 'bg-white dark:bg-gray-700 text-[#0f4c81] dark:text-white shadow-xs'
+                ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
@@ -91,9 +93,10 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
           </button>
           <button
             onClick={() => setFilter('approved')}
-            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+            aria-pressed={filter === 'approved'}
+            className={`px-3 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               filter === 'approved'
-                ? 'bg-white dark:bg-gray-700 text-[#0f4c81] dark:text-white shadow-xs'
+                ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
@@ -101,9 +104,10 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
           </button>
           <button
             onClick={() => setFilter('draft')}
-            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+            aria-pressed={filter === 'draft'}
+            className={`px-3 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               filter === 'draft'
-                ? 'bg-white dark:bg-gray-700 text-[#0f4c81] dark:text-white shadow-xs'
+                ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
@@ -120,13 +124,14 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="ابحث بالرقم المرجعي أو نوع القرض..."
-          className="w-full pr-11 pl-4 py-2.5 bg-white dark:bg-[#191c1e] border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0f4c81]"
+          aria-label="البحث في السجلات"
+          className="w-full pr-11 pl-4 py-2.5 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
 
       {/* Records List */}
       {filteredRecords.length === 0 ? (
-        <div className="bg-white dark:bg-[#191c1e] p-12 text-center rounded-2xl border border-gray-200 dark:border-gray-800 space-y-3">
+        <div className="bg-white dark:bg-surface-dark p-12 text-center rounded-2xl border border-gray-200 dark:border-gray-800 space-y-3">
           <FileText className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto" />
           <h3 className="text-base font-bold text-gray-700 dark:text-gray-300">لا توجد سجلات مطابقة</h3>
           <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -138,11 +143,11 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
           {filteredRecords.map((rec) => (
             <div
               key={rec.id}
-              className="bg-white dark:bg-[#191c1e] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-xs flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-[#0f4c81] dark:hover:border-[#95ccff] transition-all"
+              className="bg-white dark:bg-surface-dark p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-xs flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-primary dark:hover:border-primary-soft transition-all"
             >
               <div className="space-y-2 text-right">
                 <div className="flex items-center gap-3">
-                  <span className="font-bold text-base text-[#0f4c81] dark:text-[#95ccff]">
+                  <span className="font-bold text-base text-primary dark:text-primary-soft">
                     {rec.productName}
                   </span>
                   {getStatusBadge(rec.status)}
@@ -155,7 +160,7 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
                 </div>
 
                 <div className="flex flex-wrap gap-x-4 text-xs font-mono pt-1 text-gray-800 dark:text-gray-200">
-                  <span>مبلغ التمويل: <strong className="text-[#0f4c81] dark:text-[#95ccff]">{formatJODNumber(rec.loanAmount)} د.أ</strong></span>
+                  <span>مبلغ التمويل: <strong className="text-primary dark:text-primary-soft">{formatJODNumber(rec.loanAmount)} د.أ</strong></span>
                   <span>القسط الشهري: <strong className="text-emerald-700 dark:text-emerald-400">{formatJODNumber(rec.monthlyInstallment)} د.أ/شهر</strong></span>
                 </div>
               </div>
@@ -164,7 +169,7 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
               <div className="flex items-center gap-2 self-end sm:self-center">
                 <button
                   onClick={() => onPrintRecord(rec)}
-                  className="flex items-center gap-1.5 px-3.5 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-[#0f4c81] hover:text-white dark:hover:bg-[#23639a] text-gray-700 dark:text-gray-200 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                  className="flex items-center gap-1.5 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white dark:hover:bg-primary-light text-gray-700 dark:text-gray-200 rounded-lg text-xs font-bold transition-all cursor-pointer"
                   title="طباعة كشف الحسبة"
                 >
                   <Printer className="w-4 h-4" />
@@ -173,8 +178,9 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
 
                 <button
                   onClick={() => onDeleteRecord(rec.id)}
-                  className="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
+                  aria-label="حذف السجل"
                   title="حذف السجل"
+                  className="p-3.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

@@ -15,7 +15,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white dark:bg-[#121619] border-t border-[#c2c7ca] dark:border-gray-800 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] flex justify-around items-center h-16 px-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white dark:bg-canvas-dark border-t border-line dark:border-gray-800 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] flex justify-around items-center h-16 px-2">
       {items.map((item) => {
         const Icon = item.icon;
         const isActive = activeTab === item.id;
@@ -25,13 +25,13 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
             onClick={() => setActiveTab(item.id)}
             className={`flex flex-col items-center justify-center w-full py-1 cursor-pointer transition-all ${
               isActive
-                ? 'text-[#0f4c81] dark:text-[#95ccff] font-bold'
-                : 'text-[#434749] dark:text-gray-400 font-normal'
+                ? 'text-primary dark:text-primary-soft font-bold'
+                : 'text-ink-soft dark:text-gray-400 font-normal'
             }`}
           >
             <div
               className={`p-1.5 rounded-xl transition-all ${
-                isActive ? 'bg-[#bcebe5]/60 dark:bg-[#23639a]/40 scale-105' : ''
+                isActive ? 'bg-teal-light/60 dark:bg-primary-light/40 scale-105' : ''
               }`}
             >
               <Icon className="w-5 h-5" />
