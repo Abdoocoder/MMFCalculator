@@ -7,7 +7,7 @@ import {
 import { UNAUTHENTICATED } from "./helpers";
 import { Doc } from "./_generated/dataModel";
 
-type Row = Doc<"members"> & { _id: string };
+type Row = Omit<Doc<"members">, "_id" | "_creationTime"> & { _id: string };
 
 function makeCtx(rows: Row[], identity: { subject: string } | null) {
   return {

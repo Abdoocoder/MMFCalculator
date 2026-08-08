@@ -1,6 +1,7 @@
 import { mutation, query, QueryCtx, MutationCtx } from "./_generated/server";
 import { v } from "convex/values";
 import { requireUserId } from "./helpers";
+import { Doc } from "./_generated/dataModel";
 
 const memberProfileFields = {
   membershipNo: v.string(),
@@ -15,6 +16,8 @@ const memberProfileFields = {
   activeLoanCount: v.number(),
   totalLoansPaid: v.number(),
 };
+
+export type MemberProfileInput = Omit<Doc<"members">, "_id" | "_creationTime" | "userId">;
 
 export async function getMyProfileHandler(ctx: QueryCtx) {
   const identity = await ctx.auth.getUserIdentity();
@@ -34,7 +37,7 @@ export const getMyProfile = query({
 
 export async function createOnSignupHandler(
   ctx: MutationCtx,
-  args: { profile: Record<string, unknown> },
+  args: { profile: MemberProfileInput },
 ) {
   const userId = await requireUserId(ctx);
   const existing = await ctx.db
@@ -54,7 +57,7 @@ export const createOnSignup = mutation({
 
 export async function upsertMyProfileHandler(
   ctx: MutationCtx,
-  args: { profile: Record<string, unknown> },
+  args: { profile: MemberProfileInput },
 ) {
   const userId = await requireUserId(ctx);
   const existing = await ctx.db

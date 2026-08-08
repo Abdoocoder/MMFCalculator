@@ -5,7 +5,7 @@ import AuthGate from "./AuthGate";
 const mocks = vi.hoisted(() => ({
   isLoaded: true,
   isSignedIn: true,
-  profile: { _id: "mem_1", userId: "user_1" },
+  profile: { _id: "mem_1", userId: "user_1" } as { _id: string; userId: string } | null,
 }));
 
 vi.mock("@clerk/clerk-react", () => ({

@@ -1,6 +1,7 @@
 import { mutation, query, QueryCtx, MutationCtx } from "./_generated/server";
 import { v } from "convex/values";
 import { requireUserId } from "./helpers";
+import { Doc, Id } from "./_generated/dataModel";
 
 const recordFields = {
   referenceNo: v.string(),
@@ -21,6 +22,8 @@ const recordFields = {
   resultSnapshot: v.optional(v.any()),
 };
 
+export type LoanRecordInput = Omit<Doc<"loanRecords">, "_id" | "_creationTime" | "userId">;
+
 export async function listMyHandler(ctx: QueryCtx) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
@@ -39,7 +42,7 @@ export const listMy = query({
 
 export async function createHandler(
   ctx: MutationCtx,
-  args: { record: Record<string, unknown> },
+  args: { record: LoanRecordInput },
 ) {
   const userId = await requireUserId(ctx);
   return await ctx.db.insert("loanRecords", { ...args.record, userId });
@@ -55,9 +58,9 @@ export async function updateStatusHandler(
   args: { id: string; status: "draft" | "pending" | "approved" | "rejected" },
 ) {
   const userId = await requireUserId(ctx);
-  const row = await ctx.db.get(args.id);
+  const row = await ctx.db.get(args.id as Id<"loanRecords">);
   if (row && row.userId === userId) {
-    await ctx.db.patch(args.id, { status: args.status });
+    await ctx.db.patch(args.id as Id<"loanRecords">, { status: args.status });
   }
 }
 
@@ -76,9 +79,9 @@ export const updateStatus = mutation({
 
 export async function deleteDraftHandler(ctx: MutationCtx, args: { id: string }) {
   const userId = await requireUserId(ctx);
-  const row = await ctx.db.get(args.id);
+  const row = await ctx.db.get(args.id as Id<"loanRecords">);
   if (row && row.userId === userId && row.status === "draft") {
-    await ctx.db.delete(args.id);
+    await ctx.db.delete(args.id as Id<"loanRecords">);
   }
 }
 
