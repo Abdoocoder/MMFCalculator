@@ -12,7 +12,9 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.61.9",
     "@tailwindcss/vite": "^4.1.14",
+    "convex": "^1.43.0",
     "lucide-react": "^0.546.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
