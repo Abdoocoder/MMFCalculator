@@ -23,6 +23,7 @@
 - **Priority:** P3 — Review PII-at-rest surface (national ID, phone, salary in plaintext localStorage).
 
 ## Completed
+- **Priority:** P0 — Single-page landing as the new HTML entry (Financing Notation world) with live hero calculator, narrative ledger, products, legend, and app at `/#app`. **Completed:** v0.2.0.0 (2026-08-08)
 - **Priority:** P0 — Print voucher modal with accessible focus trap. **Completed:** v0.1.0.0 (2026-08-08)
 - **Priority:** P0 — Persist member profile, saved applications, and dark-mode preference. **Completed:** v0.1.0.0 (2026-08-08)
 - **Priority:** P1 — Design-token refactor replacing hard-coded colors. **Completed:** v0.1.0.0 (2026-08-08)
