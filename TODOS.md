@@ -2,6 +2,7 @@
 
 ## General
 - **Priority:** P4 — Add an offline/PWA install option so members can use the calculator without a network connection.
+- **Priority:** P2 — Admin/association review role to approve or reject applications (status pending → approved/rejected).
 
 ## Loan Calculator
 - **Priority:** P3 — Add a printable/voucher export for the monthly payment schedule (amortization table), not just the summary voucher.
@@ -23,6 +24,7 @@
 - **Priority:** P3 — Review PII-at-rest surface (national ID, phone, salary in plaintext localStorage).
 
 ## Completed
+- **Priority:** P0 — Convex + Clerk backend: member profile and loan records stored server-side in Convex scoped by the Clerk user id; member area at `#app` requires sign-in. **Completed:** v0.3.0.0 (2026-08-09)
 - **Priority:** P0 — Single-page landing as the new HTML entry (Financing Notation world) with live hero calculator, narrative ledger, products, legend, and app at `/#app`. **Completed:** v0.2.0.0 (2026-08-08)
 - **Priority:** P0 — Print voucher modal with accessible focus trap. **Completed:** v0.1.0.0 (2026-08-08)
 - **Priority:** P0 — Persist member profile, saved applications, and dark-mode preference. **Completed:** v0.1.0.0 (2026-08-08)

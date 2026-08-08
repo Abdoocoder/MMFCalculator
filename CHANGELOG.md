@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.0.0] - 2026-08-09
+
+### Added
+
+- Member identity via Clerk: the member area at `#app` now requires sign-in, with a first-login sign-up form that creates the member's profile row.
+- A Convex backend with `members` and `loanRecords` tables, each scoped by the signed-in member's Clerk user id (`ctx.auth.getUserIdentity().subject`).
+- Serverless functions: profile query/upsert/sign-up, and loan-record list/create/status-update/delete-draft, all guarded against unauthenticated callers.
+- `.env` wiring for `VITE_CONVEX_URL`, `VITE_CLERK_PUBLISHABLE_KEY`, `CLERK_JWT_ISSUER_DOMAIN`, with typed `ImportMetaEnv`.
+
+### Changed
+
+- `main.tsx` wraps the app in `ClerkProvider` + `ConvexProviderWithClerk`.
+- The `#app` surface is routed through an `AuthGate` (loading → sign-in → sign-up → app).
+- Member profile and loan records are read from and written to Convex instead of `localStorage`; only the dark-mode preference stays local.
+- The landing page and its public calculator remain open to everyone.
+
 ## [0.2.0.0] - 2026-08-08
 
 ### Added

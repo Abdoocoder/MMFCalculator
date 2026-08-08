@@ -20,14 +20,20 @@ Transparent, Sharia-compliant Murabaha financing calculation for municipal emplo
 
 ## Operating Context
 
-Arabic-first, RTL interface. Used on both mobile (bottom navigation) and desktop (sidebar). Member profile, saved applications, and dark/light preference persist in browser localStorage. Print-voucher flow produces a printable document. JOD currency.
+Arabic-first, RTL interface. Used on both mobile (bottom navigation) and desktop (sidebar). Member profile and saved applications live in the Convex backend scoped to the signed-in Clerk user; only the dark/light preference persists in browser localStorage. Print-voucher flow produces a printable document. JOD currency.
+
+## Backend & Auth
+
+- **Identity:** Clerk — the member area requires sign-in; first login prompts a profile sign-up form.
+- **Data:** Convex — `members` and `loanRecords` tables scoped to the Clerk user id.
+- **Public surface:** the landing page and its live Murabaha calculator need no account.
 
 ## Capabilities and Constraints
 
 - Loan calculator with 5 Murabaha product lines (appliances 5y max, furniture/building 6y, vehicles 7y, goods/supplies 3y, medical/education 3y), all at 15% annual profit.
 - DTI ratio cap 40% of net income; insurance estimate 0.5%/year.
 - Eligibility check, reference number generation (`MDB-YYYY-####`), saved records with status (draft/pending/approved/rejected), print voucher modal.
-- Stack: React 19 + Vite + Tailwind v4 + TypeScript strict. Dark mode via class on `<html>`. Vitest + Testing Library, 100% coverage goal.
+- Stack: React 19 + Vite + Tailwind v4 + TypeScript strict. Clerk for auth, Convex for backend/database. Dark mode via class on `<html>`. Vitest + Testing Library, 100% coverage goal.
 - Landing page must live at the app entry (index.html) ahead of the SPA, per user decision; Arabic only, dir=rtl.
 - Existing visual tokens: primary blue #0f4c81, teal #34645d, Tajawal font, canvas #f7f9fb / dark #121619.
 
