@@ -16,7 +16,7 @@ npm run build     # production build
 
 ## Test layers
 
-- **Unit tests** — pure business logic. Convention: `src/**/*.test.ts` colocated next to the module under test (e.g. `src/utils/loanCalculator.test.ts`).
+- **Unit tests** — pure business logic. Convention: `*.test.ts(x)` colocated next to the module under test. Most live under `src/` (e.g. `src/utils/loanCalculator.test.ts`); tests for root-level deploy files (the Vercel edge middleware) sit at the repo root next to their source (`middleware.test.ts`).
 - **Integration tests** — components with @testing-library/react (not yet established; add under `src/components` when covering a component).
 - **Smoke tests** — the CI pipeline (`.github/workflows/test.yml`) runs test + lint + build on every push/PR to `main`.
 - **E2E tests** — not configured; add Playwright or similar when a browser-level flow needs coverage.
