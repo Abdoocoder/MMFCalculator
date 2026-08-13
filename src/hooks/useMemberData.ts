@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
+import type { Id } from '../../convex/_generated/dataModel';
 import type { LoanRecord, MemberProfile } from '../types';
 import {
   toLoanRecord,
@@ -83,7 +84,7 @@ export function useMemberData(): UseMemberDataResult {
   const deleteRecord = useCallback(
     async (id: string) => {
       try {
-        await deleteDraft({ id });
+        await deleteDraft({ id: id as Id<'loanRecords'> });
         setLastError(null);
       } catch {
         setLastError('تعذر حذف الحسبة — يرجى المحاولة مرة أخرى.');
