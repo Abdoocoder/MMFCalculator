@@ -43,6 +43,22 @@ describe("SignUpForm", () => {
     render(<SignUpForm />);
     await user.click(screen.getByRole("button", { name: /إنشاء الملف/ }));
     expect(createOnSignup).not.toHaveBeenCalled();
+    const alerts = screen.getAllByRole("alert");
+    expect(alerts.length).toBeGreaterThan(0);
     expect(screen.getAllByText(/مطلوب/).length).toBeGreaterThan(0);
+  });
+
+  it("wires validation errors to the inputs via aria-invalid and aria-describedby", async () => {
+    const user = userEvent.setup();
+    render(<SignUpForm />);
+    await user.click(screen.getByRole("button", { name: /إنشاء الملف/ }));
+
+    const membershipInput = screen.getByLabelText(/الرقم العضوي/);
+    expect(membershipInput).toHaveAttribute("aria-invalid", "true");
+    expect(membershipInput).toHaveAttribute("aria-describedby", "signup-membershipNo-error");
+
+    const membershipAlert = document.getElementById("signup-membershipNo-error");
+    expect(membershipAlert).toHaveAttribute("role", "alert");
+    expect(membershipAlert).toHaveTextContent(/هذا الحقل مطلوب/);
   });
 });

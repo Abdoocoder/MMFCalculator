@@ -33,6 +33,7 @@ describe('LoanCalculator', () => {
     expect(draft.loanAmount).toBe(500);
     expect(draft.resultSnapshot?.profitRate).toBe(15);
     expect(screen.getByText(/تم حفظ الحسبة في قائمة السجلات/)).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent(/تم حفظ الحسبة في قائمة السجلات/);
 
     await user.click(screen.getByRole('button', { name: 'تقديم طلب المرابحة' }));
     expect(onSaveRecord).toHaveBeenCalledTimes(2);
@@ -53,5 +54,16 @@ describe('LoanCalculator', () => {
     await user.type(amount, '100000');
 
     expect(screen.getByText(/تنبيه: القسط الشهري/)).toBeInTheDocument();
+  });
+
+  it('renders the results table with row header cells and a plain max-installment box', () => {
+    render(<LoanCalculator profile={profile} onSaveRecord={vi.fn()} />);
+
+    expect(screen.getByRole('rowheader', { name: 'صافي التمويل' })).toBeInTheDocument();
+    expect(screen.getByRole('rowheader', { name: 'نسبة الربح' })).toBeInTheDocument();
+    expect(screen.getByRole('rowheader', { name: 'القسط الشهري النهائي' })).toBeInTheDocument();
+
+    const maxInstallmentLabel = screen.getByText(/الحد الأعلى للقسط الشهري المسموح/);
+    expect(maxInstallmentLabel.tagName).toBe('SPAN');
   });
 });

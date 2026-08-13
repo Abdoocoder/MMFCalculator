@@ -20,6 +20,13 @@ describe('LiveCalculator', () => {
     expect(screen.getByText('مؤهل')).toBeInTheDocument();
   });
 
+  it('announces the recalculated certified terms via a polite live region', () => {
+    render(<LiveCalculator input={base} onChange={() => {}} onLaunchApp={() => {}} />);
+    const liveRegion = document.querySelector('[aria-live="polite"]');
+    expect(liveRegion).not.toBeNull();
+    expect(liveRegion).toHaveTextContent('48.16');
+  });
+
   it('recomputes when the member edits the amount', () => {
     const onChange = vi.fn();
     render(<LiveCalculator input={base} onChange={onChange} onLaunchApp={() => {}} />);

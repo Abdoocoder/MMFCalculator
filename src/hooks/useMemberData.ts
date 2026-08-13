@@ -22,6 +22,7 @@ export interface UseMemberDataResult {
   deleteRecord: (id: string) => Promise<void>;
   updateProfile: (profile: MemberProfile) => Promise<void>;
   lastError: string | null;
+  clearError: () => void;
 }
 
 /**
@@ -103,5 +104,5 @@ export function useMemberData(): UseMemberDataResult {
     [upsertProfile],
   );
 
-  return { profile, records, saveRecord, deleteRecord, updateProfile, lastError };
+  return { profile, records, saveRecord, deleteRecord, updateProfile, lastError, clearError: () => setLastError(null) };
 }

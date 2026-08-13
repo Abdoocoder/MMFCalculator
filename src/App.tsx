@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { BottomNav } from './components/BottomNav';
@@ -30,11 +30,18 @@ export default function App() {
       : window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
-  const { profile, records, saveRecord, deleteRecord, updateProfile, lastError } =
+  const { profile, records, saveRecord, deleteRecord, updateProfile, lastError, clearError } =
     useMemberData();
 
   // Selected record for direct printing modal
   const [printModalRecord, setPrintModalRecord] = useState<LoanRecord | null>(null);
+
+  // Move keyboard focus to the main content region whenever the active tab changes,
+  // so screen-reader and keyboard users are not left on the stale nav element.
+  const mainRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    mainRef.current?.focus({ preventScroll: true });
+  }, [activeTab]);
 
   // Synchronize dark mode class on HTML root and persist it (local preference only)
   useEffect(() => {
@@ -85,12 +92,28 @@ export default function App() {
 
   return (
     <div className="bg-canvas dark:bg-canvas-dark text-ink dark:text-ink-light min-h-screen flex flex-col transition-colors font-tajawal">
+      {/* Skip link for keyboard / screen-reader users — first focusable element */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:right-2 focus:z-[100] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold focus:text-sm"
+      >
+        تخطي إلى المحتوى الرئيسي
+      </a>
+
       {lastError && (
         <div
           role="alert"
-          className="fixed inset-x-4 top-4 z-50 md:inset-x-auto md:right-6 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg text-sm"
+          className="fixed inset-x-4 top-4 z-50 md:inset-x-auto md:right-6 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg text-sm flex items-center justify-between gap-4"
         >
-          {lastError}
+          <span>{lastError}</span>
+          <button
+            type="button"
+            onClick={clearError}
+            aria-label="إغلاق رسالة الخطأ"
+            className="shrink-0 rounded-md p-1 text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+          >
+            ✕
+          </button>
         </div>
       )}
 
@@ -113,7 +136,12 @@ export default function App() {
         />
 
         {/* Main Content Area */}
-        <main className="flex-1 md:pr-72 pb-24 md:pb-12 pt-2 transition-all">
+        <main
+          id="main-content"
+          ref={mainRef}
+          tabIndex={-1}
+          className="flex-1 md:pr-72 pb-24 md:pb-12 pt-2 transition-all focus:outline-none"
+        >
           {activeTab === 'home' && (
             <HomeDashboard
               profile={profile}

@@ -239,4 +239,65 @@ describe('App with Convex queries and mutations', () => {
     expect(screen.getByText('MDB-2026-1001')).toBeInTheDocument();
     expect(screen.getByText('750.00 د.أ')).toBeInTheDocument();
   });
+
+  it('exposes a skip link to the main content region', () => {
+    render(<App />);
+    const skip = screen.getByRole('link', { name: 'تخطي إلى المحتوى الرئيسي' });
+    expect(skip).toHaveAttribute('href', '#main-content');
+    const main = document.getElementById('main-content');
+    expect(main).not.toBeNull();
+    expect(main).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('marks the active navigation item with aria-current="page"', () => {
+    render(<App />);
+    expect(screen.getByRole('button', { name: 'الحاسبة' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('button', { name: 'حاسبة المرابحة' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+    for (const home of screen.getAllByRole('button', { name: 'الرئيسية' })) {
+      expect(home).not.toHaveAttribute('aria-current');
+    }
+  });
+
+  it('moves focus to the main content region when the tab changes', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getAllByRole('button', { name: 'الرئيسية' })[0]);
+    expect(document.getElementById('main-content')).toHaveFocus();
+  });
+
+  it('shows a dismissible error toast and clears it on dismiss', async () => {
+    mocks.mutations.createRecord.mockRejectedValueOnce(new Error('network'));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: 'حفظ الحسبة' }));
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent(/تعذر حفظ الحسبة/);
+
+    await user.click(screen.getByRole('button', { name: 'إغلاق رسالة الخطأ' }));
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+
+  it('updates the profile from the profile tab', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getAllByRole('button', { name: 'الملف الشخصي' })[0]);
+    expect(screen.getByText('الملف الشخصي والبيانات الوظيفية')).toBeInTheDocument();
+
+    const nameInput = screen.getByLabelText('اسم الموظف الثلاثي');
+    await user.clear(nameInput);
+    await user.type(nameInput, 'عمر خالد العبدالله');
+    await user.click(screen.getByRole('button', { name: 'حفظ التغييرات' }));
+
+    expect(mocks.mutations.upsertProfile).toHaveBeenCalledTimes(1);
+    expect(mocks.mutations.upsertProfile).toHaveBeenCalledWith(
+      expect.objectContaining({
+        profile: expect.objectContaining({ fullName: 'عمر خالد العبدالله' }),
+      }),
+    );
+    expect(screen.getByRole('status')).toHaveTextContent(/تم حفظ بياناتك/);
+  });
 });

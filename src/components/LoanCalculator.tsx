@@ -91,7 +91,7 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
       
       {/* Toast Notification */}
       {saveNotification && (
-        <div className="p-4 bg-emerald-600 text-white font-medium rounded-xl shadow-lg flex items-center justify-between animate-fade-in text-sm">
+        <div role="status" className="p-4 bg-emerald-600 text-white font-medium rounded-xl shadow-lg flex items-center justify-between animate-fade-in text-sm">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 shrink-0" />
             <span>{saveNotification}</span>
@@ -223,9 +223,9 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
 
           {/* Max Installment Display Box */}
           <div className="flex flex-col gap-1.5 mt-2">
-            <label className="text-xs font-bold text-gray-700 dark:text-gray-300 text-right">
+            <span className="block text-xs font-bold text-gray-700 dark:text-gray-300 text-right">
               الحد الأعلى للقسط الشهري المسموح (40%)
-            </label>
+            </span>
             <div className="w-full bg-mist dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-sm text-gray-900 dark:text-gray-100 flex justify-between items-center">
               <span className="font-bold text-base font-mono text-primary dark:text-primary-soft">
                 {formatJODNumber(result.maxInstallment)}
@@ -258,56 +258,56 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
                 <tbody>
                   
                   <tr className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
-                    <td className="py-3 px-4 text-gray-600 dark:text-gray-300">صافي التمويل</td>
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">صافي التمويل</th>
                     <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
                       {formatJODNumber(result.netFinancing)}
                     </td>
                   </tr>
 
                   <tr className="bg-canvas dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
-                    <td className="py-3 px-4 text-gray-600 dark:text-gray-300">نسبة الربح</td>
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">نسبة الربح</th>
                     <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
                       {result.profitRate}%
                     </td>
                   </tr>
 
                   <tr className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
-                    <td className="py-3 px-4 text-gray-600 dark:text-gray-300">الربح السنوي</td>
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">الربح السنوي</th>
                     <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
                       {formatJODNumber(result.annualProfit)}
                     </td>
                   </tr>
 
                   <tr className="bg-canvas dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
-                    <td className="py-3 px-4 text-gray-600 dark:text-gray-300">إجمالي الربح</td>
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">إجمالي الربح</th>
                     <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
                       {formatJODNumber(result.totalProfit)}
                     </td>
                   </tr>
 
                   <tr className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
-                    <td className="py-3 px-4 text-gray-600 dark:text-gray-300">المبلغ المطلوب سداده</td>
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">المبلغ المطلوب سداده</th>
                     <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
                       {formatJODNumber(result.totalPayable)}
                     </td>
                   </tr>
 
                   <tr className="bg-canvas dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
-                    <td className="py-3 px-4 text-gray-600 dark:text-gray-300">تأمين سنوي</td>
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">تأمين سنوي</th>
                     <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
                       {formatJODNumber(result.annualInsurance)}
                     </td>
                   </tr>
 
                   <tr className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
-                    <td className="py-3 px-4 text-gray-600 dark:text-gray-300">إجمالي التأمين</td>
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">إجمالي التأمين</th>
                     <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
                       {formatJODNumber(result.totalInsurance)}
                     </td>
                   </tr>
 
                   <tr className="bg-canvas dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
-                    <td className="py-3 px-4 text-gray-600 dark:text-gray-300">الإجمالي مع التأمين</td>
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">الإجمالي مع التأمين</th>
                     <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
                       {formatJODNumber(result.totalWithInsurance)}
                     </td>
@@ -319,7 +319,7 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
                       ? 'bg-primary-light text-white'
                       : 'bg-rose-600 text-white'
                   }`}>
-                    <td className="py-4 px-4 font-bold text-base">القسط الشهري النهائي</td>
+                    <th scope="row" className="py-4 px-4 font-bold text-base text-right">القسط الشهري النهائي</th>
                     <td className="py-4 px-4 font-extrabold text-xl font-mono">
                       {formatJODNumber(result.monthlyInstallment)} دينار
                     </td>

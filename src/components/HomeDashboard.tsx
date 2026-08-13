@@ -89,10 +89,10 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
         {/* News Card */}
         <div className="md:col-span-7 bg-white dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-xs space-y-4">
           <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
-            <h3 className="font-bold text-primary dark:text-primary-soft text-base flex items-center gap-2">
+            <h2 className="font-bold text-primary dark:text-primary-soft text-base flex items-center gap-2">
               <Bell className="w-5 h-5" />
               <span>إعلانات وتعليمات الجمعية</span>
-            </h3>
+            </h2>
             <span className="text-xs text-gray-500 dark:text-gray-400">أغسطس 2026</span>
           </div>
 
@@ -116,9 +116,9 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
 
         {/* Quick Actions Panel */}
         <div className="md:col-span-5 bg-white dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-xs space-y-4">
-          <h3 className="font-bold text-primary dark:text-primary-soft text-base border-b border-gray-100 dark:border-gray-800 pb-3">
+          <h2 className="font-bold text-primary dark:text-primary-soft text-base border-b border-gray-100 dark:border-gray-800 pb-3">
             روابط وخدمات سريعة
-          </h3>
+          </h2>
 
           <div className="space-y-3">
             <button
@@ -130,11 +130,11 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
                   <Calculator className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-gray-900 dark:text-white">حاسبة المرابحة الإسلامية</h4>
+                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">حاسبة المرابحة الإسلامية</h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400">احسب الأقساط ونسبة المرابحة الثابتة (15%)</p>
                 </div>
               </div>
-              <ChevronLeft className="w-5 h-5 text-gray-400 group-hover:translate-x-[-4px] transition-transform" />
+              <ChevronLeft className="w-5 h-5 text-gray-500 group-hover:translate-x-[-4px] transition-transform" />
             </button>
 
             <button
@@ -146,11 +146,11 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
                   <FileSpreadsheet className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-gray-900 dark:text-white">استعراض السجلات والطلبات</h4>
+                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">استعراض السجلات والطلبات</h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400">تابع حالة القروض المحفوظة والسابقة</p>
                 </div>
               </div>
-              <ChevronLeft className="w-5 h-5 text-gray-400 group-hover:translate-x-[-4px] transition-transform" />
+              <ChevronLeft className="w-5 h-5 text-gray-500 group-hover:translate-x-[-4px] transition-transform" />
             </button>
           </div>
         </div>

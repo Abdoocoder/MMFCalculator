@@ -35,5 +35,6 @@ describe('ProfileSettings', () => {
       expect.objectContaining({ fullName: 'عمر خالد العبدالله' })
     );
     expect(screen.getByText(/تم حفظ بياناتك وتحديث الصافي المالي بنجاح/)).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent(/تم حفظ بياناتك وتحديث الصافي المالي بنجاح/);
   });
 });

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ApplicationsHistory } from './ApplicationsHistory';
 import type { LoanRecord } from '../types';
@@ -91,6 +91,27 @@ describe('ApplicationsHistory', () => {
     expect(screen.getByText('لا توجد سجلات مطابقة')).toBeInTheDocument();
   });
 
+  it('groups the status filters in a labelled group and keeps the empty state heading ordered', () => {
+    renderHistory();
+
+    const filterGroup = screen.getByRole('group', { name: 'تصفية حسب حالة الطلب' });
+    expect(within(filterGroup).getByRole('button', { name: /^الكل/ })).toBeInTheDocument();
+    expect(within(filterGroup).getByRole('button', { name: 'قيد الدراسة' })).toBeInTheDocument();
+    expect(within(filterGroup).getByRole('button', { name: 'المعتمدة' })).toBeInTheDocument();
+    expect(within(filterGroup).getByRole('button', { name: 'المسودات' })).toBeInTheDocument();
+
+    const headings = screen.getAllByRole('heading');
+    expect(
+      headings.find((h) => h.textContent?.includes('سجل الطلبات والحسبات المحفوظة'))?.tagName,
+    ).toBe('H1');
+
+    const search = screen.getByLabelText('البحث في السجلات');
+    fireEvent.change(search, { target: { value: 'zzz' } });
+    expect(
+      screen.getByRole('heading', { level: 2, name: /لا توجد سجلات مطابقة/ }),
+    ).toBeInTheDocument();
+  });
+
   it('calls onDeleteRecord and onPrintRecord with the right record', async () => {
     const onDeleteRecord = vi.fn();
     const onPrintRecord = vi.fn();
@@ -99,7 +120,11 @@ describe('ApplicationsHistory', () => {
 
     // Only drafts expose a delete (trash) button — submitted records are final.
     expect(screen.getAllByRole('button', { name: 'حذف السجل' })).toHaveLength(1);
-    await user.click(screen.getAllByRole('button', { name: 'حذف السجل' })[0]);
+    const deleteButton = screen.getAllByRole('button', { name: 'حذف السجل' })[0];
+    // 44px minimum touch target enforced via size utilities (jsdom cannot compute layout).
+    expect(deleteButton.className).toMatch(/min-w-11/);
+    expect(deleteButton.className).toMatch(/min-h-11/);
+    await user.click(deleteButton);
     expect(onDeleteRecord).toHaveBeenCalledWith('r3');
 
     await user.click(screen.getAllByRole('button', { name: 'طباعة' })[2]);

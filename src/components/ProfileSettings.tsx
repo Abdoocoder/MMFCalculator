@@ -38,7 +38,7 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ profile, onUpd
       </div>
 
       {savedSuccess && (
-        <div className="p-4 bg-emerald-600 text-white font-medium rounded-xl shadow-md flex items-center gap-2 text-sm">
+        <div role="status" className="p-4 bg-emerald-600 text-white font-medium rounded-xl shadow-md flex items-center gap-2 text-sm">
           <CheckCircle2 className="w-5 h-5 shrink-0" />
           <span>تم حفظ بياناتك وتحديث الصافي المالي بنجاح!</span>
         </div>

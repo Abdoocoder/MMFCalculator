@@ -68,7 +68,11 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto">
+        <div
+          role="group"
+          aria-label="تصفية حسب حالة الطلب"
+          className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto"
+        >
           <button
             onClick={() => setFilter('all')}
             aria-pressed={filter === 'all'}
@@ -118,7 +122,7 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
 
       {/* Search Input */}
       <div className="relative">
-        <Search className="w-5 h-5 text-gray-400 absolute right-3.5 top-3" />
+        <Search className="w-5 h-5 text-gray-500 absolute right-3.5 top-3" />
         <input
           type="text"
           value={searchQuery}
@@ -133,7 +137,7 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
       {filteredRecords.length === 0 ? (
         <div className="bg-white dark:bg-surface-dark p-12 text-center rounded-2xl border border-gray-200 dark:border-gray-800 space-y-3">
           <FileText className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto" />
-          <h3 className="text-base font-bold text-gray-700 dark:text-gray-300">لا توجد سجلات مطابقة</h3>
+          <h2 className="text-base font-bold text-gray-700 dark:text-gray-300">لا توجد سجلات مطابقة</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400">
             يمكنك إجراء حسبة جديدة من قسم حاسبة القروض وحفظها أو تقديمها.
           </p>
@@ -182,7 +186,7 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
                     onClick={() => onDeleteRecord(rec.id)}
                     aria-label="حذف السجل"
                     title="حذف السجل"
-                    className="p-3.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
+                    className="p-4 min-w-11 min-h-11 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

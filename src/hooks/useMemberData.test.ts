@@ -235,4 +235,19 @@ describe('useMemberData', () => {
     });
     expect(result.current.lastError).toBeNull();
   });
+
+  it('clears lastError via clearError without a new mutation', async () => {
+    mocks.createRecord.mockRejectedValueOnce(new Error('network'));
+    const { result } = renderHook(() => useMemberData());
+
+    await act(async () => {
+      await result.current.saveRecord(clientRecord);
+    });
+    expect(result.current.lastError).not.toBeNull();
+
+    await act(async () => {
+      result.current.clearError();
+    });
+    expect(result.current.lastError).toBeNull();
+  });
 });

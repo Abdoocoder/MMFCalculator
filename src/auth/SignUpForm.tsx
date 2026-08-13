@@ -118,11 +118,19 @@ export default function SignUpForm() {
                 type={type ?? "text"}
                 value={String(form[key])}
                 onChange={(e) => set(key, e.target.value)}
+                aria-invalid={errors[key] || undefined}
+                aria-describedby={errors[key] ? `signup-${key}-error` : undefined}
                 className={inputCls}
                 dir={type === "number" ? "ltr" : undefined}
               />
               {errors[key] && (
-                <span className="text-xs text-rose-600 dark:text-rose-400">هذا الحقل مطلوب</span>
+                <span
+                  id={`signup-${key}-error`}
+                  role="alert"
+                  className="text-xs text-rose-600 dark:text-rose-400"
+                >
+                  هذا الحقل مطلوب
+                </span>
               )}
             </div>
           ))}

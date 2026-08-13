@@ -161,7 +161,7 @@ export default function LiveCalculator({ input, onChange, onLaunchApp }: LiveCal
         </div>
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div aria-live="polite" className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
         {certifiedTerms.map((t) => (
           <div
             key={t.label}
