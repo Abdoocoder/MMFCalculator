@@ -3,7 +3,7 @@
 **Date:** 2026-08-14
 **Reporter:** opencode
 **Severity:** Production outage (auth unavailable to all users)
-**Status:** ROOT CAUSE CONFIRMED, FIX DEPLOYED TO CODE — requires external config (Clerk dashboard + Vercel env) before it works live.
+**Status:** RESOLVED — code fix committed (`4805143`), external config applied, verified live. `https://mmf-calculator.vercel.app/__clerk/` returns HTTP 200 (application/json) from the Clerk Frontend API; app is 200.
 
 ---
 
