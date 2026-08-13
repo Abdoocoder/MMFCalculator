@@ -27,6 +27,7 @@ Arabic-first, RTL interface. Used on both mobile (bottom navigation) and desktop
 - **Identity:** Clerk — the member area requires sign-in; first login prompts a profile sign-up form.
 - **Data:** Convex — `members` and `loanRecords` tables scoped to the Clerk user id.
 - **Public surface:** the landing page and its live Murabaha calculator need no account.
+- **Clerk proxying (production):** the Clerk Frontend API is proxied through this app's own domain at `https://mmf-calculator.vercel.app/__clerk/*` via the root Vercel Edge `middleware.ts`, which forwards to `frontend-api.clerk.dev` with `Clerk-Proxy-Url` / `Clerk-Secret-Key` headers. This requires two external config steps not in the repo: set the proxy URL in the Clerk dashboard (Production instance → Domains) and add `CLERK_SECRET_KEY` to the Vercel project env. See `memory/2026-08-14-clerk-prod-frontend-api-vercel-proxy.md` for the full write-up.
 
 ## Capabilities and Constraints
 

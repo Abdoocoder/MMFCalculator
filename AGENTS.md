@@ -1,6 +1,6 @@
 ## Testing
 
-- Run tests with `npm test` (Vitest, jsdom). Test files live next to their source as `src/**/*.test.ts`; tests for root-level deploy files (e.g. the Vercel edge `middleware.ts`) stay colocated at the repo root (`middleware.test.ts`).
+- Run tests with `npm test` (Vitest, jsdom). Test files live next to their source as `src/**/*.test.ts`; tests for root-level deploy files (e.g. the Vercel edge `middleware.ts`, which must live at the project root for Vercel to pick it up) stay colocated at the repo root (`middleware.test.ts`).
 - See TESTING.md for framework details and conventions.
 - Expectations:
   - 100% test coverage is the goal — tests make vibe coding safe.
