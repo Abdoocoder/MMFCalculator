@@ -1,0 +1,347 @@
+{
+  "/home/abdullah/Projects/MMFCalculator/tsconfig.json": {
+    "mtime": 1786226685.4801328,
+    "ast_hash": "50c2b247d63354668545b2147d9a524d",
+    "semantic_hash": "50c2b247d63354668545b2147d9a524d"
+  },
+  "/home/abdullah/Projects/MMFCalculator/package.json": {
+    "mtime": 1786226685.4994118,
+    "ast_hash": "c54a72e5f0a19648949034e42d0b7692",
+    "semantic_hash": "c54a72e5f0a19648949034e42d0b7692"
+  },
+  "/home/abdullah/Projects/MMFCalculator/metadata.json": {
+    "mtime": 1786214567.197148,
+    "ast_hash": "79ae25d0a5c3b742ea40c0d79796bdda",
+    "semantic_hash": "79ae25d0a5c3b742ea40c0d79796bdda"
+  },
+  "/home/abdullah/Projects/MMFCalculator/vite.config.ts": {
+    "mtime": 1786226685.4803286,
+    "ast_hash": "4def150aeae63a09bb65dab139be877f",
+    "semantic_hash": "4def150aeae63a09bb65dab139be877f"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/schema.ts": {
+    "mtime": 1786226685.4977934,
+    "ast_hash": "256e0ff5c9528a7bdf35eb5d257260af",
+    "semantic_hash": "256e0ff5c9528a7bdf35eb5d257260af"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/loanRecords.ts": {
+    "mtime": 1786226685.4976246,
+    "ast_hash": "363ce7a0c03a6a1ffa17dbd7fa865e02",
+    "semantic_hash": "363ce7a0c03a6a1ffa17dbd7fa865e02"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/loanRecords.test.ts": {
+    "mtime": 1786226685.4975688,
+    "ast_hash": "4bcc5ca985aaf0136ea2acb996556036",
+    "semantic_hash": "4bcc5ca985aaf0136ea2acb996556036"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/helpers.ts": {
+    "mtime": 1786226685.4974997,
+    "ast_hash": "4a681476531060fd57deab6432e391ba",
+    "semantic_hash": "4a681476531060fd57deab6432e391ba"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/members.test.ts": {
+    "mtime": 1786226685.497688,
+    "ast_hash": "75d1dcf38d0570ae2da454b3bd9d6da8",
+    "semantic_hash": "75d1dcf38d0570ae2da454b3bd9d6da8"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/members.ts": {
+    "mtime": 1786226685.4977431,
+    "ast_hash": "479dca66777661e653d68b0d320c8563",
+    "semantic_hash": "479dca66777661e653d68b0d320c8563"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/auth.config.ts": {
+    "mtime": 1786226685.4974077,
+    "ast_hash": "fcfe2f98969a12f861d4815178f1e5b3",
+    "semantic_hash": "fcfe2f98969a12f861d4815178f1e5b3"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/helpers.test.ts": {
+    "mtime": 1786226685.4974546,
+    "ast_hash": "98cfa47ad23558ac163d94d1a8430d3c",
+    "semantic_hash": "98cfa47ad23558ac163d94d1a8430d3c"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/_generated/server.d.ts": {
+    "mtime": 1786226685.4972963,
+    "ast_hash": "0fe804f10b1c73b9c66bc0de360ca78a",
+    "semantic_hash": "0fe804f10b1c73b9c66bc0de360ca78a"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/_generated/dataModel.d.ts": {
+    "mtime": 1786226685.4972274,
+    "ast_hash": "af87bff09394971f8debeb5b8e9f8a70",
+    "semantic_hash": "af87bff09394971f8debeb5b8e9f8a70"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/_generated/api.d.ts": {
+    "mtime": 1786226685.4971194,
+    "ast_hash": "02920cbd11ff047fbb18b1bad0a0bee5",
+    "semantic_hash": "02920cbd11ff047fbb18b1bad0a0bee5"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/_generated/api.js": {
+    "mtime": 1786226685.497172,
+    "ast_hash": "ea14005171d3e17b1b28a7139ad36d62",
+    "semantic_hash": "ea14005171d3e17b1b28a7139ad36d62"
+  },
+  "/home/abdullah/Projects/MMFCalculator/convex/_generated/server.js": {
+    "mtime": 1786226685.4973607,
+    "ast_hash": "b1bdc4a5813ccfd94328d5b31c8d6c59",
+    "semantic_hash": "b1bdc4a5813ccfd94328d5b31c8d6c59"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/main.tsx": {
+    "mtime": 1786226685.5000174,
+    "ast_hash": "8b5a57429d21ff386f80c6642a7cdea8",
+    "semantic_hash": "8b5a57429d21ff386f80c6642a7cdea8"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/vite-env.d.ts": {
+    "mtime": 1786226685.5000672,
+    "ast_hash": "6188461e9f02f909c47d27be5a51db4c",
+    "semantic_hash": "6188461e9f02f909c47d27be5a51db4c"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/App.test.tsx": {
+    "mtime": 1786227582.2203069,
+    "ast_hash": "c88ccc731c88e655863005aa88826539",
+    "semantic_hash": "c88ccc731c88e655863005aa88826539"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/types.ts": {
+    "mtime": 1786226685.4795065,
+    "ast_hash": "7b8bc741576ef221c8f3d2bebd4ede58",
+    "semantic_hash": "7b8bc741576ef221c8f3d2bebd4ede58"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/App.tsx": {
+    "mtime": 1786227415.782265,
+    "ast_hash": "a50d52dbf02f1c11031e6a0125d18bfb",
+    "semantic_hash": "a50d52dbf02f1c11031e6a0125d18bfb"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/LandingGate.tsx": {
+    "mtime": 1786226685.4999459,
+    "ast_hash": "52cc85b5314b833524ef19729c85b3fd",
+    "semantic_hash": "52cc85b5314b833524ef19729c85b3fd"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/star.test.ts": {
+    "mtime": 1786226685.478905,
+    "ast_hash": "335d99cdd52eb4c11cbd5714b49c5e0c",
+    "semantic_hash": "335d99cdd52eb4c11cbd5714b49c5e0c"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/ledger.ts": {
+    "mtime": 1786226685.4788618,
+    "ast_hash": "5c46ca4b751afd6fe7e47ecadb49a0de",
+    "semantic_hash": "5c46ca4b751afd6fe7e47ecadb49a0de"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/LandingGate.test.tsx": {
+    "mtime": 1786227426.6461372,
+    "ast_hash": "e081a050f3ce68382eb84d6991d0434b",
+    "semantic_hash": "e081a050f3ce68382eb84d6991d0434b"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/LedgerSection.tsx": {
+    "mtime": 1786226685.4785872,
+    "ast_hash": "a5c58bc438296d6378c20b05115c6f3f",
+    "semantic_hash": "a5c58bc438296d6378c20b05115c6f3f"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/LedgerSection.test.tsx": {
+    "mtime": 1786226685.4785354,
+    "ast_hash": "eca3996dadbd4c5cdbf8d87041de5b18",
+    "semantic_hash": "eca3996dadbd4c5cdbf8d87041de5b18"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/LandingPage.tsx": {
+    "mtime": 1786226685.4784696,
+    "ast_hash": "3a41ef4057d31af922edc12728da3c42",
+    "semantic_hash": "3a41ef4057d31af922edc12728da3c42"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/LandingPage.test.tsx": {
+    "mtime": 1786226685.478386,
+    "ast_hash": "8386d56c7fc920717f93af9573d6949f",
+    "semantic_hash": "8386d56c7fc920717f93af9573d6949f"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/star.ts": {
+    "mtime": 1786226685.4789493,
+    "ast_hash": "ebcae38541419e3a12a9a49c46a7524f",
+    "semantic_hash": "ebcae38541419e3a12a9a49c46a7524f"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/StarField.tsx": {
+    "mtime": 1786226685.478733,
+    "ast_hash": "66d4e1cfadabe2e06a4c98beb8c7edcd",
+    "semantic_hash": "66d4e1cfadabe2e06a4c98beb8c7edcd"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/ledger.test.ts": {
+    "mtime": 1786226685.478818,
+    "ast_hash": "f7d01a916b562cc152a5970d7dcbc4f7",
+    "semantic_hash": "f7d01a916b562cc152a5970d7dcbc4f7"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/LiveCalculator.test.tsx": {
+    "mtime": 1786226685.4786327,
+    "ast_hash": "1423f8321fb5154d6f8684259107d4ae",
+    "semantic_hash": "1423f8321fb5154d6f8684259107d4ae"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/useReveal.ts": {
+    "mtime": 1786226685.478988,
+    "ast_hash": "dc19f6674744650000ce1e47e1f418c9",
+    "semantic_hash": "dc19f6674744650000ce1e47e1f418c9"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/landing/LiveCalculator.tsx": {
+    "mtime": 1786226685.478692,
+    "ast_hash": "14af95f1ed8755ed251ed9a0376a598e",
+    "semantic_hash": "14af95f1ed8755ed251ed9a0376a598e"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/utils/loanCalculator.test.ts": {
+    "mtime": 1786226685.4797091,
+    "ast_hash": "8891dfb3a01132933627c6a89d557093",
+    "semantic_hash": "8891dfb3a01132933627c6a89d557093"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/utils/loanCalculator.ts": {
+    "mtime": 1786226685.4799218,
+    "ast_hash": "ceb1b98bb41e1d64ccb6f53fd9449252",
+    "semantic_hash": "ceb1b98bb41e1d64ccb6f53fd9449252"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/test/setup.ts": {
+    "mtime": 1786226685.4791114,
+    "ast_hash": "b6047cb48430aab17d0c9a3cec1e4bb5",
+    "semantic_hash": "b6047cb48430aab17d0c9a3cec1e4bb5"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/data/mockData.ts": {
+    "mtime": 1786226685.4780004,
+    "ast_hash": "a385aee335dc29079f80844452a33d7a",
+    "semantic_hash": "a385aee335dc29079f80844452a33d7a"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/HomeDashboard.tsx": {
+    "mtime": 1786226685.4761422,
+    "ast_hash": "07f4390bca10d7200305e788d3590789",
+    "semantic_hash": "07f4390bca10d7200305e788d3590789"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/BottomNav.tsx": {
+    "mtime": 1786226685.4757037,
+    "ast_hash": "6992df51a29e666a5417fa316cee5bc1",
+    "semantic_hash": "6992df51a29e666a5417fa316cee5bc1"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/PrintVoucherModal.test.tsx": {
+    "mtime": 1786226685.47689,
+    "ast_hash": "19f133e6c7afcbb3a2b9f362dd8ce60f",
+    "semantic_hash": "19f133e6c7afcbb3a2b9f362dd8ce60f"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/ProfileSettings.tsx": {
+    "mtime": 1786226685.477575,
+    "ast_hash": "eed3ed88ce60b5b90d701e48537b3121",
+    "semantic_hash": "eed3ed88ce60b5b90d701e48537b3121"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/Sidebar.tsx": {
+    "mtime": 1786226685.4777927,
+    "ast_hash": "c41396ff388e4fee1fd3f1cbb233797b",
+    "semantic_hash": "c41396ff388e4fee1fd3f1cbb233797b"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/LoanCalculator.tsx": {
+    "mtime": 1786226685.4766529,
+    "ast_hash": "9ae6d248b3cb0b83706ba5503c2d6606",
+    "semantic_hash": "9ae6d248b3cb0b83706ba5503c2d6606"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/PrintVoucherModal.tsx": {
+    "mtime": 1786226685.4771504,
+    "ast_hash": "ed9c1f6b0f6f9a873e05c4e3afc756f1",
+    "semantic_hash": "ed9c1f6b0f6f9a873e05c4e3afc756f1"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/ApplicationsHistory.test.tsx": {
+    "mtime": 1786226685.4752235,
+    "ast_hash": "c25789287c847878624c99364d34589b",
+    "semantic_hash": "c25789287c847878624c99364d34589b"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/ProfileSettings.test.tsx": {
+    "mtime": 1786226685.4773476,
+    "ast_hash": "e3c1e10fd51bbad0de9ca199eec1814d",
+    "semantic_hash": "e3c1e10fd51bbad0de9ca199eec1814d"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/LoanCalculator.test.tsx": {
+    "mtime": 1786226685.4763424,
+    "ast_hash": "73ac1c029cb8aa8b193a457528dff14b",
+    "semantic_hash": "73ac1c029cb8aa8b193a457528dff14b"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/ApplicationsHistory.tsx": {
+    "mtime": 1786226685.475477,
+    "ast_hash": "aa15e6302baedabf7fd69456b0eddad4",
+    "semantic_hash": "aa15e6302baedabf7fd69456b0eddad4"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/components/Header.tsx": {
+    "mtime": 1786226685.4759169,
+    "ast_hash": "93cab49485e617cf7a01a62e557af867",
+    "semantic_hash": "93cab49485e617cf7a01a62e557af867"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/auth/AuthGate.tsx": {
+    "mtime": 1786226685.4995434,
+    "ast_hash": "127f7cda639f12e7364ef318a9d4c18e",
+    "semantic_hash": "127f7cda639f12e7364ef318a9d4c18e"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/auth/SignUpForm.tsx": {
+    "mtime": 1786226685.4997966,
+    "ast_hash": "45f4e4f4fd522e43c86b6708cfa8b27a",
+    "semantic_hash": "45f4e4f4fd522e43c86b6708cfa8b27a"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/auth/SignInScreen.tsx": {
+    "mtime": 1786226685.4996672,
+    "ast_hash": "927302a08ad916d46c3d7add72257aaa",
+    "semantic_hash": "927302a08ad916d46c3d7add72257aaa"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/auth/SignUpForm.test.tsx": {
+    "mtime": 1786226685.4997199,
+    "ast_hash": "7c3701af49f28d8a2898f63328991f27",
+    "semantic_hash": "7c3701af49f28d8a2898f63328991f27"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/auth/SignInScreen.test.tsx": {
+    "mtime": 1786226685.499618,
+    "ast_hash": "8743ea0b475341145c665fd265139828",
+    "semantic_hash": "8743ea0b475341145c665fd265139828"
+  },
+  "/home/abdullah/Projects/MMFCalculator/src/auth/AuthGate.test.tsx": {
+    "mtime": 1786226685.4994812,
+    "ast_hash": "1c6a37adb26f2d54c7575272cba86f10",
+    "semantic_hash": "1c6a37adb26f2d54c7575272cba86f10"
+  },
+  "/home/abdullah/Projects/MMFCalculator/index.html": {
+    "mtime": 1786226685.4717908,
+    "ast_hash": "20218a030304817eb7ff6d8772408c49",
+    "semantic_hash": "20218a030304817eb7ff6d8772408c49"
+  },
+  "/home/abdullah/Projects/MMFCalculator/TODOS.md": {
+    "mtime": 1786226978.5744083,
+    "ast_hash": "fa640c9d2eda27524c7707543e35bfff",
+    "semantic_hash": "fa640c9d2eda27524c7707543e35bfff"
+  },
+  "/home/abdullah/Projects/MMFCalculator/PRODUCT.md": {
+    "mtime": 1786226970.6255019,
+    "ast_hash": "a508f6b9ed8cdb4b05313bab6c6e440a",
+    "semantic_hash": "a508f6b9ed8cdb4b05313bab6c6e440a"
+  },
+  "/home/abdullah/Projects/MMFCalculator/AGENTS.md": {
+    "mtime": 1786226685.471155,
+    "ast_hash": "1123a6dd7ee705bf129d33aa522fdfeb",
+    "semantic_hash": "1123a6dd7ee705bf129d33aa522fdfeb"
+  },
+  "/home/abdullah/Projects/MMFCalculator/TESTING.md": {
+    "mtime": 1786226685.4715397,
+    "ast_hash": "9c76856e0a7ac1a23f7c30e3493e0852",
+    "semantic_hash": "9c76856e0a7ac1a23f7c30e3493e0852"
+  },
+  "/home/abdullah/Projects/MMFCalculator/CHANGELOG.md": {
+    "mtime": 1786226957.418657,
+    "ast_hash": "b3879cee6a34b90b8105ca421a74b57b",
+    "semantic_hash": "b3879cee6a34b90b8105ca421a74b57b"
+  },
+  "/home/abdullah/Projects/MMFCalculator/.github/workflows/test.yml": {
+    "mtime": 1786226685.4707766,
+    "ast_hash": "07321cb3408b34d6975b6cc1cb918a0a",
+    "semantic_hash": "07321cb3408b34d6975b6cc1cb918a0a"
+  },
+  "/home/abdullah/Projects/MMFCalculator/docs/superpowers/specs/2026-08-09-public-calculator-surface-design.md": {
+    "mtime": 1786226685.498521,
+    "ast_hash": "bb1a14fe94dc8c7cdba0ac89ad9ba05c",
+    "semantic_hash": "bb1a14fe94dc8c7cdba0ac89ad9ba05c"
+  },
+  "/home/abdullah/Projects/MMFCalculator/docs/superpowers/specs/2026-08-09-convex-clerk-backend-design.md": {
+    "mtime": 1786226685.4984193,
+    "ast_hash": "3bc8638b057c4159acb94139a298d62e",
+    "semantic_hash": "3bc8638b057c4159acb94139a298d62e"
+  },
+  "/home/abdullah/Projects/MMFCalculator/docs/superpowers/specs/2026-08-09-convex-clerk-frontend-migration-design.md": {
+    "mtime": 1786227135.2235656,
+    "ast_hash": "38db85430343d0aee26477a7a22a71ba",
+    "semantic_hash": "38db85430343d0aee26477a7a22a71ba"
+  },
+  "/home/abdullah/Projects/MMFCalculator/docs/superpowers/plans/2026-08-09-convex-clerk-backend.md": {
+    "mtime": 1786227629.4636376,
+    "ast_hash": "d3b2e1c4819baa02726329b78502cb89",
+    "semantic_hash": "d3b2e1c4819baa02726329b78502cb89"
+  }
+}
