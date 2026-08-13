@@ -17,4 +17,10 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run lint
+      # Build with placeholder env vars so the required-env guard passes while
+      # still validating that the app compiles. Real values are injected by the
+      # deploy platform (AI Studio) at build time.
       - run: npm run build
+        env:
+          VITE_CONVEX_URL: "https://ci-placeholder.convex.cloud"
+          VITE_CLERK_PUBLISHABLE_KEY: "pk_test_ci_placeholder"
