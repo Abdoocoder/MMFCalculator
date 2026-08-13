@@ -4,12 +4,17 @@ import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
 import {assertRequiredEnvVars} from './src/config/requiredEnv';
 
-export default defineConfig(({mode}) => {
+export default defineConfig(({command, mode}) => {
   // Load all env vars (no VITE_ prefix filter) so the guard can validate
   // the build-time vars the app inlines (see src/main.tsx). Shell/CI/deploy
   // env takes priority over .env files, which is what a cloud build injects.
   const env = loadEnv(mode, process.cwd(), '');
-  assertRequiredEnvVars(env);
+
+  // Only enforce on production builds. Vitest/dev-server boot the config via
+  // command 'serve', which must not require the deploy-time vars.
+  if (command === 'build') {
+    assertRequiredEnvVars(env);
+  }
 
   return {
     plugins: [react(), tailwindcss()],
