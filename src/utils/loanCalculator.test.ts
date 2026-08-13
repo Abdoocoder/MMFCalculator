@@ -93,10 +93,16 @@ describe('calculateLoan', () => {
 });
 
 describe('generateReferenceNo', () => {
-  it('matches the MDB-<year>-<4digit> format', () => {
+  it('matches the MDB-YYYYMMDD-HHmmss-<3digit> format', () => {
     const ref = generateReferenceNo();
-    expect(ref).toMatch(/^MDB-\d{4}-\d{4}$/);
+    expect(ref).toMatch(/^MDB-\d{8}-\d{6}-\d{3}$/);
     expect(ref).toContain(String(new Date().getFullYear()));
+  });
+
+  it('produces different references across distinct timestamps', () => {
+    const a = generateReferenceNo(new Date('2026-08-09T12:00:00'));
+    const b = generateReferenceNo(new Date('2026-08-09T12:00:01'));
+    expect(a).not.toBe(b);
   });
 });
 

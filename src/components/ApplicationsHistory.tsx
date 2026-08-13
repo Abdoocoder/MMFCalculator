@@ -176,14 +176,17 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
                   <span>طباعة</span>
                 </button>
 
-                <button
-                  onClick={() => onDeleteRecord(rec.id)}
-                  aria-label="حذف السجل"
-                  title="حذف السجل"
-                  className="p-3.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                {/* Drafts can be edited/deleted; submitted records are final */}
+                {rec.status === 'draft' && (
+                  <button
+                    onClick={() => onDeleteRecord(rec.id)}
+                    aria-label="حذف السجل"
+                    title="حذف السجل"
+                    className="p-3.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </div>
           ))}

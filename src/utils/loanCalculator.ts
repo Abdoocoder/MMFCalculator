@@ -82,8 +82,18 @@ export function calculateLoan(input: CalculationInput): CalculationResult {
   };
 }
 
-export function generateReferenceNo(): string {
-  return `MDB-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+export function generateReferenceNo(now: Date = new Date()): string {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const yyyy = now.getFullYear();
+  const MM = pad(now.getMonth() + 1);
+  const dd = pad(now.getDate());
+  const HH = pad(now.getHours());
+  const mm = pad(now.getMinutes());
+  const ss = pad(now.getSeconds());
+  // Timestamp component keeps references unique across calls within a year;
+  // the trailing 3-digit random only breaks ties within the same second.
+  const rand = Math.floor(100 + Math.random() * 900);
+  return `MDB-${yyyy}${MM}${dd}-${HH}${mm}${ss}-${rand}`;
 }
 
 export function formatJODNumber(value: number): string {

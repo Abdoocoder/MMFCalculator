@@ -4,8 +4,6 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useMutation, useQuery } from 'convex/react';
-import { api } from '../convex/_generated/api';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { BottomNav } from './components/BottomNav';
@@ -16,7 +14,7 @@ import { ProfileSettings } from './components/ProfileSettings';
 import { PrintVoucherModal } from './components/PrintVoucherModal';
 import { MemberProfile, LoanRecord, CalculationInput, CalculationResult } from './types';
 import { calculateLoan, LOAN_PRODUCTS } from './utils/loanCalculator';
-import { Doc } from '../convex/_generated/dataModel';
+import { useMemberData } from './hooks/useMemberData';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('calculator');
@@ -32,45 +30,8 @@ export default function App() {
       : window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
-  const profileDoc: Doc<'members'> | null | undefined = useQuery(api.members.getMyProfile);
-  const recordDocs: Doc<'loanRecords'>[] = useQuery(api.loanRecords.listMy) ?? [];
-
-  const profile: MemberProfile | null = profileDoc
-    ? {
-        id: profileDoc._id,
-        membershipNo: profileDoc.membershipNo,
-        fullName: profileDoc.fullName,
-        nationalId: profileDoc.nationalId,
-        department: profileDoc.department,
-        jobTitle: profileDoc.jobTitle,
-        netSalary: profileDoc.netSalary,
-        currentDeductions: profileDoc.currentDeductions,
-        phone: profileDoc.phone,
-        joinDate: profileDoc.joinDate,
-        activeLoanCount: profileDoc.activeLoanCount,
-        totalLoansPaid: profileDoc.totalLoansPaid,
-      }
-    : null;
-
-  const records: LoanRecord[] = recordDocs.map((doc) => ({
-    id: doc._id,
-    referenceNo: doc.referenceNo,
-    date: doc.date,
-    productName: doc.productName,
-    loanAmount: doc.loanAmount,
-    netIncome: doc.netIncome,
-    durationYears: doc.durationYears,
-    monthlyInstallment: doc.monthlyInstallment,
-    totalWithInsurance: doc.totalWithInsurance,
-    status: doc.status,
-    notes: doc.notes,
-    resultSnapshot: doc.resultSnapshot,
-  }));
-
-  const createRecord = useMutation(api.loanRecords.create);
-  const updateRecordStatus = useMutation(api.loanRecords.updateStatus);
-  const deleteRecord = useMutation(api.loanRecords.deleteDraft);
-  const upsertProfile = useMutation(api.members.upsertMyProfile);
+  const { profile, records, saveRecord, deleteRecord, updateProfile, lastError } =
+    useMemberData();
 
   // Selected record for direct printing modal
   const [printModalRecord, setPrintModalRecord] = useState<LoanRecord | null>(null);
@@ -86,43 +47,15 @@ export default function App() {
   }, [darkMode]);
 
   const handleSaveRecord = async (newRecord: LoanRecord) => {
-    await createRecord({
-      record: {
-        referenceNo: newRecord.referenceNo,
-        date: newRecord.date,
-        productName: newRecord.productName,
-        loanAmount: newRecord.loanAmount,
-        netIncome: newRecord.netIncome,
-        durationYears: newRecord.durationYears,
-        monthlyInstallment: newRecord.monthlyInstallment,
-        totalWithInsurance: newRecord.totalWithInsurance,
-        status: newRecord.status,
-        notes: newRecord.notes,
-        resultSnapshot: newRecord.resultSnapshot,
-      },
-    });
+    await saveRecord(newRecord);
   };
 
   const handleDeleteRecord = async (id: string) => {
-    await deleteRecord({ id });
+    await deleteRecord(id);
   };
 
   const handleUpdateProfile = async (updatedProfile: MemberProfile) => {
-    await upsertProfile({
-      profile: {
-        membershipNo: updatedProfile.membershipNo,
-        fullName: updatedProfile.fullName,
-        nationalId: updatedProfile.nationalId,
-        department: updatedProfile.department,
-        jobTitle: updatedProfile.jobTitle,
-        netSalary: updatedProfile.netSalary,
-        currentDeductions: updatedProfile.currentDeductions,
-        phone: updatedProfile.phone,
-        joinDate: updatedProfile.joinDate,
-        activeLoanCount: updatedProfile.activeLoanCount,
-        totalLoansPaid: updatedProfile.totalLoansPaid,
-      },
-    });
+    await updateProfile(updatedProfile);
   };
 
   // Convert a saved LoanRecord into temporary CalculationInput & CalculationResult for PrintVoucherModal.
@@ -152,7 +85,15 @@ export default function App() {
 
   return (
     <div className="bg-canvas dark:bg-canvas-dark text-ink dark:text-ink-light min-h-screen flex flex-col transition-colors font-tajawal">
-      
+      {lastError && (
+        <div
+          role="alert"
+          className="fixed inset-x-4 top-4 z-50 md:inset-x-auto md:right-6 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg text-sm"
+        >
+          {lastError}
+        </div>
+      )}
+
       {/* Top Navigation Header */}
       <Header
         profile={profile}

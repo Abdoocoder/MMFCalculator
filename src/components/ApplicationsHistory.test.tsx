@@ -97,8 +97,10 @@ describe('ApplicationsHistory', () => {
     const user = userEvent.setup();
     renderHistory({ onDeleteRecord, onPrintRecord });
 
-    await user.click(screen.getAllByRole('button', { name: 'حذف السجل' })[1]);
-    expect(onDeleteRecord).toHaveBeenCalledWith('r2');
+    // Only drafts expose a delete (trash) button — submitted records are final.
+    expect(screen.getAllByRole('button', { name: 'حذف السجل' })).toHaveLength(1);
+    await user.click(screen.getAllByRole('button', { name: 'حذف السجل' })[0]);
+    expect(onDeleteRecord).toHaveBeenCalledWith('r3');
 
     await user.click(screen.getAllByRole('button', { name: 'طباعة' })[2]);
     expect(onPrintRecord).toHaveBeenCalledWith(records[2]);

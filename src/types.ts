@@ -1,3 +1,5 @@
+import type { Doc } from '../convex/_generated/dataModel';
+
 export interface LoanProduct {
   id: string;
   name: string;
@@ -29,32 +31,22 @@ export interface CalculationResult {
   dtiPercentage: number;
 }
 
-export interface LoanRecord {
+/**
+ * Single source of truth for persisted record/profile shapes is the Convex
+ * schema (convex/schema.ts) via the generated Doc<> types. The `id` field is a
+ * client-only alias for `_id`; `userId`/`_creationTime` are server-managed.
+ */
+export type LoanRecord = Omit<
+  Doc<'loanRecords'>,
+  '_id' | '_creationTime' | 'userId' | 'resultSnapshot'
+> & {
   id: string;
-  date: string;
-  productName: string;
-  loanAmount: number;
-  netIncome: number;
-  durationYears: number;
-  monthlyInstallment: number;
-  totalWithInsurance: number;
-  status: 'draft' | 'pending' | 'approved' | 'rejected';
-  referenceNo: string;
-  notes?: string;
   resultSnapshot?: CalculationResult;
-}
+};
 
-export interface MemberProfile {
+export type MemberProfile = Omit<
+  Doc<'members'>,
+  '_id' | '_creationTime' | 'userId'
+> & {
   id: string;
-  membershipNo: string;
-  fullName: string;
-  nationalId: string;
-  department: string;
-  jobTitle: string;
-  netSalary: number;
-  currentDeductions: number;
-  phone: string;
-  joinDate: string;
-  activeLoanCount: number;
-  totalLoansPaid: number;
-}
+};
