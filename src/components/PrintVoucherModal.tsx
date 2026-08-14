@@ -89,78 +89,78 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
     day: 'numeric'
   });
 
-  return createPortal(
-    <div
-      ref={dialogRef}
-      tabIndex={-1}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto print-modal-root"
-      role="dialog"
-      aria-modal="true"
-      aria-label="معاينة طباعة نتيجة الحسبة"
-    >
-      <div className="bg-surface dark:bg-surface-dark text-ink dark:text-ink-light rounded-2xl max-w-2xl w-full shadow-2xl border border-line dark:border-gray-800 overflow-hidden my-8">
+return createPortal(
+     <div
+       ref={dialogRef}
+       tabIndex={-1}
+       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 overflow-y-auto print-modal-root"
+       role="dialog"
+       aria-modal="true"
+       aria-label="معاينة طباعة نتيجة الحسبة"
+     >
+      <div className="bg-surface dark:bg-surface-dark text-ink dark:text-ink-light rounded-2xl max-w-[500px] w-full shadow-2xl border border-line dark:border-gray-800 overflow-hidden my-4 sm:my-6">
         
-        {/* Modal Controls Header */}
-        <div className="flex justify-between items-center p-4 bg-mist dark:bg-gray-800/80 border-b border-line dark:border-gray-700 no-print">
-          <div className="flex items-center gap-2 text-primary dark:text-primary-soft font-bold">
-            <Printer className="w-5 h-5" />
-            <span>معاينة طباعة نتيجة الحسبة</span>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2.5 rounded-lg text-ink-soft hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
-            aria-label="إغلاق النافذة"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+{/* Modal Controls Header */}
+         <div className="flex justify-between items-center p-3 sm:p-4 bg-mist dark:bg-gray-800/80 border-b border-line dark:border-gray-700 no-print">
+           <div className="flex items-center gap-3 sm:gap-2 text-primary dark:text-primary-soft font-bold">
+             <Printer className="w-6 h-6" />
+             <span>معاينة طباعة نتيجة الحسبة</span>
+           </div>
+           <button
+             onClick={onClose}
+             className="w-10 h-10 rounded-lg text-ink-soft hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+             aria-label="إغلاق النافذة"
+           >
+             <X className="w-6 h-6" />
+           </button>
+         </div>
 
-        {/* Printable Paper Voucher Content */}
-        <div className="p-6 sm:p-8 space-y-6 bg-surface text-ink" id="printable-voucher">
+{/* Printable Paper Voucher Content */}
+         <div className="p-4 sm:p-6 space-y-5 sm:space-y-6 bg-surface text-ink" id="printable-voucher">
           
-          {/* Header Branding */}
-          <div className="text-center border-b-2 border-primary pb-5 space-y-2">
-            <div className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold rounded-full mb-1">
-              جمعية موظفي بلدية مادبا الكبرى
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-primary">
-              كشف حاسبة المرابحة الإسلامية والتمويل
-            </h2>
-            <p className="text-xs text-ink-soft">
-              التاريخ: {currentDate} | الرقم المرجعي: {displayRefNo}
-            </p>
-          </div>
+{/* Header Branding */}
+           <div className="text-center border-b-2 border-primary pb-4 sm:pb-5 space-y-2 sm:space-y-3">
+             <div className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold rounded-full mb-1 sm:mb-2">
+               جمعية موظفي بلدية مادبا الكبرى
+             </div>
+             <h2 className="text-xl sm:text-2xl font-bold text-primary">
+               كشف حاسبة المرابحة الإسلامية والتمويل
+             </h2>
+             <p className="text-sm text-ink-soft">
+               التاريخ: {currentDate} | الرقم المرجعي: {displayRefNo}
+             </p>
+           </div>
 
-          {/* Member Info Grid */}
-          <div className="grid grid-cols-2 gap-4 text-sm bg-mist p-4 rounded-xl border border-line">
-            <div>
-              <span className="text-ink-soft block text-xs">اسم العضو:</span>
-              <span className="font-bold text-ink">{profile.fullName}</span>
-            </div>
-            <div>
-              <span className="text-ink-soft block text-xs">رقم العضوية:</span>
-              <span className="font-bold text-ink font-mono">{profile.membershipNo}</span>
-            </div>
-            <div>
-              <span className="text-ink-soft block text-xs">القسم / المديرية:</span>
-              <span className="font-bold text-ink">{profile.department}</span>
-            </div>
-            <div>
-              <span className="text-ink-soft block text-xs">صافي الراتب المصرح:</span>
-              <span className="font-bold text-ink">{formatJODNumber(input.netIncome)} دينار</span>
-            </div>
-          </div>
+{/* Member Info Grid */}
+           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm bg-mist p-3 sm:p-4 rounded-xl border border-line">
+             <div>
+               <span className="text-ink-soft block text-xs">اسم العضو:</span>
+               <span className="font-bold text-ink">{profile.fullName}</span>
+             </div>
+             <div>
+               <span className="text-ink-soft block text-xs">رقم العضوية:</span>
+               <span className="font-bold text-ink font-mono">{profile.membershipNo}</span>
+             </div>
+             <div>
+               <span className="text-ink-soft block text-xs">القسم / المديرية:</span>
+               <span className="font-bold text-ink">{profile.department}</span>
+             </div>
+             <div>
+               <span className="text-ink-soft block text-xs">صافي الراتب المصرح:</span>
+               <span className="font-bold text-ink">{formatJODNumber(input.netIncome)} دينار</span>
+             </div>
+           </div>
 
-          {/* Table Breakdown */}
-          <div className="overflow-hidden rounded-xl border border-line">
-            <table className="w-full text-right text-sm">
-              <thead className="bg-primary text-white font-bold">
-                <tr>
-                  <th className="py-2.5 px-4">بيان الحسبة</th>
-                  <th className="py-2.5 px-4 text-left">القيمة (دينار)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
+{/* Table Breakdown */}
+           <div className="overflow-hidden rounded-xl border border-line">
+             <table className="w-full text-right text-sm">
+               <thead className="bg-primary text-white font-bold">
+                 <tr>
+                   <th className="py-2.5 px-4 sm:px-3">بيان الحسبة</th>
+                   <th className="py-2.5 px-4 sm:px-3 text-left">القيمة (دينار)</th>
+                 </tr>
+               </thead>
+               <tbody className="divide-y divide-gray-200">
                 <tr>
                   <td className="py-2 px-4 text-ink">نوع المنتج التمويلي</td>
                   <td className="py-2 px-4 text-left font-bold text-ink">{productName}</td>
@@ -201,24 +201,24 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
             </table>
           </div>
 
-          {/* Validation Status */}
-          <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
-            result.isEligible 
-              ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
-              : 'bg-rose-50 border-rose-200 text-rose-800'
-          }`}>
-            {result.isEligible ? (
-              <>
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>الحسبة متوافقة مع شروط الاقتطاع (القسط الشهري ضمن الحد الأعلى المسموح).</span>
-              </>
-            ) : (
-              <>
-                <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-                <span>القسط الشهري يتجاوز الحد الأعلى المسموح به لنسبة الاقتطاع (40% من الراتب الصافي).</span>
-              </>
-            )}
-          </div>
+{/* Validation Status */}
+           <div className={`p-3 rounded-xl border text-sm flex items-center gap-2 ${
+             result.isEligible 
+               ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+               : 'bg-rose-50 border-rose-200 text-rose-800'
+           }`}>
+             {result.isEligible ? (
+               <>
+                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                 <span>الحسبة متوافقة مع شروط الاقتطاع (القسط الشهري ضمن الحد الأعلى المسموح).</span>
+               </>
+             ) : (
+               <>
+                 <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                 <span>القسط الشهري يتجاوز الحد الأعلى المسموح به لنسبة الاقتطاع (40% من الراتب الصافي).</span>
+               </>
+             )}
+           </div>
 
           {/* Signatures Footer */}
           <div className="pt-6 grid grid-cols-2 gap-8 text-center text-xs text-ink-soft border-t border-line mt-8">
