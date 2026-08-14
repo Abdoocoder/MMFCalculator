@@ -20,7 +20,7 @@ Transparent, Sharia-compliant Murabaha financing calculation for municipal emplo
 
 ## Operating Context
 
-Arabic-first, RTL interface. Used on both mobile (bottom navigation) and desktop (sidebar). Member profile and saved applications live in the Convex backend scoped to the signed-in Clerk user; only the dark/light preference persists in browser localStorage. Print-voucher flow produces a printable document. JOD currency.
+Arabic-first, RTL interface. Used on both mobile (bottom navigation) and desktop (sidebar). Member profile and saved applications live in the Convex backend scoped to the signed-in Clerk user. An offline mirror cache (`mmf-profile` / `mmf-records` in localStorage) seeds fast cold-start and offline reads; the server value wins and is written back when available, and a definitive empty result clears the mirror. The dark/light preference (`mmf-dark-mode`) is purely local — it is a device preference, not member data. Print-voucher flow produces a printable document. JOD currency.
 
 ## Backend & Auth
 
