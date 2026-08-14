@@ -33,7 +33,7 @@ Arabic-first, RTL interface. Used on both mobile (bottom navigation) and desktop
 
 - Loan calculator with 5 Murabaha product lines (appliances 5y max, furniture/building 6y, vehicles 7y, goods/supplies 3y, medical/education 3y), all at 15% annual profit.
 - DTI ratio cap 40% of net income; insurance estimate 0.5%/year.
-- Eligibility check, reference number generation (`MDB-YYYY-####`), saved records with status (draft/pending/approved/rejected), print voucher modal.
+- Eligibility check, reference number generation (`MDB-YYYYMMDD-HHmmss-###`), saved records with status (draft/pending/approved/rejected), print voucher modal.
 - Stack: React 19 + Vite + Tailwind v4 + TypeScript strict. Clerk for auth, Convex for backend/database. Dark mode via class on `<html>`. Vitest + Testing Library, 100% coverage goal.
 - Landing page must live at the app entry (index.html) ahead of the SPA, per user decision; Arabic only, dir=rtl.
 - Existing visual tokens: primary blue #0f4c81, teal #34645d, Tajawal font, canvas #f7f9fb / dark #121619.

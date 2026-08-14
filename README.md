@@ -14,7 +14,7 @@ Live at [https://mmf-calculator.vercel.app](https://mmf-calculator.vercel.app) �
 
 - 5 Murabaha product lines — appliances (5y max), furniture/building (6y), vehicles (7y), goods/supplies (3y), medical/education (3y).
 - Fixed **15% annual profit**, **40% DTI cap** on net salary, **0.5%/year** insurance estimate.
-- Reference numbers in `MDB-YYYY-####` format.
+- Reference numbers in `MDB-YYYYMMDD-HHmmss-###` format.
 
 ## Tech stack
 
@@ -110,7 +110,7 @@ The CI pipeline (`.github/workflows/test.yml`) runs test + lint + build on every
 
 - [PRODUCT.md](./PRODUCT.md) — product purpose, users, positioning, brand commitments
 - [TESTING.md](./TESTING.md) — test framework and conventions
-- [CHANGELOG.md](./CHANGELOG.md) — release history (current: 0.3.1.0)
+- [CHANGELOG.md](./CHANGELOG.md) — release history (current: 0.3.2.0)
 - [TODOS.md](./TODOS.md) — open work
 
 ## Brand
