@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import LandingPage from './LandingPage';
 import { LOAN_PRODUCTS } from '../utils/loanCalculator';
 import { ASSOCIATION_ANNOUNCEMENTS } from '../data/mockData';
@@ -48,6 +48,19 @@ describe('LandingPage', () => {
     expect(select.value).toBe('vehicles');
   });
 
+  it('clamps the duration to the selected product max years', () => {
+    render(<LandingPage onLaunchApp={() => {}} />);
+    const duration = screen.getByLabelText('مدة التمويل بالسنوات') as HTMLSelectElement;
+    fireEvent.change(duration, { target: { value: '5' } });
+    expect(duration.value).toBe('5');
+
+    const rowButtons = screen.getAllByRole('button', { name: 'احسب هذا المنتج' });
+    fireEvent.click(rowButtons[3]);
+    const select = screen.getByLabelText('نوع التمويل') as HTMLSelectElement;
+    expect(select.value).toBe('goods_supplies');
+    expect(duration.value).toBe('3');
+  });
+
   it('launches the app from the final CTA', () => {
     const onLaunchApp = vi.fn();
     render(<LandingPage onLaunchApp={onLaunchApp} />);
@@ -59,5 +72,73 @@ describe('LandingPage', () => {
     render(<LandingPage onLaunchApp={() => {}} />);
     const link = screen.getByRole('link', { name: 'Abdoo Coder' });
     expect(link).toHaveAttribute('href', 'https://www.abdoocoder.dev/');
+  });
+
+  it('links the logo home to "/" and renders nav links on desktop and mobile', () => {
+    render(<LandingPage onLaunchApp={() => {}} />);
+    expect(screen.getByRole('link', { name: 'جمعية موظفي بلدية مادبا الكبرى' })).toHaveAttribute(
+      'href',
+      '/',
+    );
+    const navs = screen.getAllByRole('navigation', { name: 'التنقل الرئيسي' });
+    expect(navs).toHaveLength(2);
+    for (const nav of navs) {
+      for (const href of ['#products', '#ledger', '#how', '#announcements']) {
+        const links = within(nav)
+          .getAllByRole('link')
+          .filter((l) => l.getAttribute('href') === href);
+        expect(links).toHaveLength(1);
+      }
+    }
+  });
+
+  it('respects prefers-reduced-motion: scrolls instantly when reduce is requested', () => {
+    vi.stubGlobal(
+      'matchMedia',
+      (query: string) => ({
+        matches: query === '(prefers-reduced-motion: reduce)',
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      }),
+    );
+    try {
+      render(<LandingPage onLaunchApp={() => {}} />);
+      fireEvent.click(screen.getAllByRole('button', { name: 'احسب هذا المنتج' })[0]);
+      expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith(
+        expect.objectContaining({ behavior: 'auto', block: 'start' }),
+      );
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('scrolls smoothly when matchMedia exists and reduce is not requested', () => {
+    vi.stubGlobal(
+      'matchMedia',
+      (query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      }),
+    );
+    try {
+      render(<LandingPage onLaunchApp={() => {}} />);
+      fireEvent.click(screen.getAllByRole('button', { name: 'احسب هذا المنتج' })[0]);
+      expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith(
+        expect.objectContaining({ behavior: 'smooth', block: 'start' }),
+      );
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 });

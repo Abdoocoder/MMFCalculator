@@ -1,9 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
-import App from '../App';
-import AuthGate from '../auth/AuthGate';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import LandingPage from './LandingPage';
 
+const AppSurface = lazy(() => import('./AppSurface'));
+
 const APP_HASH = '#app';
+
+const loadingFallback = (
+  <div className="min-h-screen flex items-center justify-center bg-canvas dark:bg-canvas-dark font-tajawal">
+    <p className="text-sm text-ink-soft dark:text-gray-400">جارٍ تحميل النظام...</p>
+  </div>
+);
 
 /**
  * Single-HTML-entry gate: the landing page renders at `/`, and the existing
@@ -28,9 +34,9 @@ export default function LandingGate() {
 
   if (isApp) {
     return (
-      <AuthGate>
-        <App />
-      </AuthGate>
+      <Suspense fallback={loadingFallback}>
+        <AppSurface />
+      </Suspense>
     );
   }
   return <LandingPage onLaunchApp={launchApp} />;

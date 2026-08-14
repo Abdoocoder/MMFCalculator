@@ -16,6 +16,7 @@
   /* Neutral surface tokens */
   --color-canvas: #f7f9fb;
   --color-canvas-dark: #121619;
+  --color-surface: #ffffff;
   --color-surface-dark: #191c1e;
   --color-surface-deep: #1a1e22;
   --color-line: #c2c7ca;
@@ -41,7 +42,7 @@
 
 @layer base {
   body {
-    font-family: 'Tajawal', 'Be Vietnam Pro', system-ui, sans-serif;
+    font-family: 'Tajawal', system-ui, sans-serif;
   }
 
   /* Visible keyboard focus for interactive elements */

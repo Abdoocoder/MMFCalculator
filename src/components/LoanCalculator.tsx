@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Printer, Receipt, Info, CheckCircle2, AlertCircle, Save, Send } from 'lucide-react';
 import { CalculationInput, CalculationResult, MemberProfile, LoanRecord } from '../types';
 import { LOAN_PRODUCTS, calculateLoan, formatJODNumber, generateReferenceNo } from '../utils/loanCalculator';
@@ -21,6 +21,18 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
   const [result, setResult] = useState<CalculationResult>(() => calculateLoan(input));
   const [showPrintModal, setShowPrintModal] = useState(false);
   const [saveNotification, setSaveNotification] = useState<string | null>(null);
+  const notificationTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    return () => {
+      notificationTimers.current.forEach((t) => clearTimeout(t));
+    };
+  }, []);
+
+  const showNotification = (message: string, duration: number) => {
+    setSaveNotification(message);
+    notificationTimers.current.push(setTimeout(() => setSaveNotification(null), duration));
+  };
 
   // Auto-recalculate whenever inputs change
   useEffect(() => {
@@ -40,8 +52,7 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
   const handleCalculate = () => {
     const res = calculateLoan(input);
     setResult(res);
-    setSaveNotification('تم تحديث الحسبة بنجاح');
-    setTimeout(() => setSaveNotification(null), 3000);
+    showNotification('تم تحديث الحسبة بنجاح', 3000);
   };
 
   const handleSaveCalculation = () => {
@@ -61,8 +72,7 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
     };
 
     onSaveRecord(newRecord);
-    setSaveNotification('تم حفظ الحسبة في قائمة السجلات بنجاح!');
-    setTimeout(() => setSaveNotification(null), 4000);
+    showNotification('تم حفظ الحسبة في قائمة السجلات بنجاح!', 4000);
   };
 
   const handleSubmitApplication = () => {
@@ -82,8 +92,7 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
     };
 
     onSaveRecord(newApplication);
-    setSaveNotification('تم تقديم طلب المرابحة رسميًا إلى إدارة الجمعية بنجاح!');
-    setTimeout(() => setSaveNotification(null), 5000);
+    showNotification('تم تقديم طلب المرابحة رسميًا إلى إدارة الجمعية بنجاح!', 5000);
   };
 
   return (
@@ -103,17 +112,17 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
       )}
 
       {/* Header Profit Rate Card */}
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-surface-dark p-6 rounded-xl border border-line dark:border-gray-800 shadow-xs gap-4 transition-colors">
+      <div className="flex flex-col sm:flex-row justify-between items-center bg-surface dark:bg-surface-dark p-6 rounded-xl border border-line dark:border-gray-800 shadow-xs gap-4 transition-colors">
         <div className="text-center sm:text-right w-full flex justify-between items-center">
           <div>
             <h1 className="text-lg font-bold text-primary dark:text-primary-soft mb-0.5">
               نسبة الربح المعتمدة
             </h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-ink-soft dark:text-gray-400">
               {selectedProduct.name} - {selectedProduct.description}
             </p>
           </div>
-          <p className="text-3xl font-extrabold text-ink dark:text-white font-mono bg-mist dark:bg-gray-800 px-5 py-2 rounded-xl border border-gray-200 dark:border-gray-700">
+          <p className="text-3xl font-extrabold text-ink dark:text-white font-mono bg-mist dark:bg-gray-800 px-5 py-2 rounded-xl border border-line dark:border-gray-700">
             {result.profitRate}%
           </p>
         </div>
@@ -123,22 +132,22 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Calculator Inputs Card */}
-        <div className="lg:col-span-5 flex flex-col gap-4 bg-white dark:bg-surface-dark p-6 rounded-xl border border-line dark:border-gray-800 shadow-xs transition-colors">
-          <h2 className="text-xl font-bold text-primary dark:text-primary-soft border-b border-gray-200 dark:border-gray-800 pb-3 mb-1 flex items-center justify-between">
+        <div className="lg:col-span-5 flex flex-col gap-4 bg-surface dark:bg-surface-dark p-6 rounded-xl border border-line dark:border-gray-800 shadow-xs transition-colors">
+          <h2 className="text-xl font-bold text-primary dark:text-primary-soft border-b border-line dark:border-gray-800 pb-3 mb-1 flex items-center justify-between">
             <span>بيانات التمويل والمرابحة</span>
-            <span className="text-xs font-normal text-gray-500 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-md">تغيير فوري</span>
+            <span className="text-xs font-normal text-ink-soft bg-mist dark:bg-gray-800 px-2.5 py-1 rounded-md">تغيير فوري</span>
           </h2>
 
           {/* Product Select */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="loan-product" className="text-xs font-bold text-gray-700 dark:text-gray-300 text-right">
+            <label htmlFor="loan-product" className="text-xs font-bold text-ink dark:text-gray-300 text-right">
               المنتج التمويلي
             </label>
             <select
               id="loan-product"
               value={input.productId}
               onChange={(e) => handleInputChange('productId', e.target.value)}
-              className="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer"
+              className="w-full bg-surface dark:bg-gray-900 border border-line dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm font-medium text-ink dark:text-gray-100 cursor-pointer"
             >
               {LOAN_PRODUCTS.map((prod) => (
                 <option key={prod.id} value={prod.id}>
@@ -150,7 +159,7 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
 
           {/* Loan Amount Input */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="loan-amount" className="text-xs font-bold text-gray-700 dark:text-gray-300 text-right">
+            <label htmlFor="loan-amount" className="text-xs font-bold text-ink dark:text-gray-300 text-right">
               المبلغ المطلوب (دينار)
             </label>
             <input
@@ -161,14 +170,14 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
               dir="ltr"
               value={input.loanAmount || ''}
               onChange={(e) => handleInputChange('loanAmount', e.target.value)}
-              className="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm text-right font-mono text-gray-900 dark:text-gray-100"
+              className="w-full bg-surface dark:bg-gray-900 border border-line dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm text-right font-mono text-ink dark:text-gray-100"
               placeholder="500"
             />
           </div>
 
           {/* Net Income Input */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="loan-net-income" className="text-xs font-bold text-gray-700 dark:text-gray-300 text-right">
+            <label htmlFor="loan-net-income" className="text-xs font-bold text-ink dark:text-gray-300 text-right">
               صافي الراتب (دينار)
             </label>
             <input
@@ -179,14 +188,14 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
               dir="ltr"
               value={input.netIncome || ''}
               onChange={(e) => handleInputChange('netIncome', e.target.value)}
-              className="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm text-right font-mono text-gray-900 dark:text-gray-100"
+              className="w-full bg-surface dark:bg-gray-900 border border-line dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm text-right font-mono text-ink dark:text-gray-100"
               placeholder="200"
             />
           </div>
 
           {/* Current Deductions Input */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="loan-deductions" className="text-xs font-bold text-gray-700 dark:text-gray-300 text-right">
+            <label htmlFor="loan-deductions" className="text-xs font-bold text-ink dark:text-gray-300 text-right">
               اقتطاعات حالية (دينار)
             </label>
             <input
@@ -197,21 +206,21 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
               dir="ltr"
               value={input.currentDeductions || ''}
               onChange={(e) => handleInputChange('currentDeductions', e.target.value)}
-              className="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm text-right font-mono text-gray-900 dark:text-gray-100"
+              className="w-full bg-surface dark:bg-gray-900 border border-line dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm text-right font-mono text-ink dark:text-gray-100"
               placeholder="0"
             />
           </div>
 
           {/* Duration Years Select */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="loan-duration" className="text-xs font-bold text-gray-700 dark:text-gray-300 text-right">
+            <label htmlFor="loan-duration" className="text-xs font-bold text-ink dark:text-gray-300 text-right">
               مدة السداد (سنوات)
             </label>
             <select
               id="loan-duration"
               value={input.durationYears}
               onChange={(e) => handleInputChange('durationYears', e.target.value)}
-              className="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer"
+              className="w-full bg-surface dark:bg-gray-900 border border-line dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm font-medium text-ink dark:text-gray-100 cursor-pointer"
             >
               {Array.from({ length: selectedProduct.maxYears }, (_, i) => i + 1).map((yr) => (
                 <option key={yr} value={yr}>
@@ -223,14 +232,14 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
 
           {/* Max Installment Display Box */}
           <div className="flex flex-col gap-1.5 mt-2">
-            <span className="block text-xs font-bold text-gray-700 dark:text-gray-300 text-right">
+            <span className="block text-xs font-bold text-ink dark:text-gray-300 text-right">
               الحد الأعلى للقسط الشهري المسموح (40%)
             </span>
-            <div className="w-full bg-mist dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-sm text-gray-900 dark:text-gray-100 flex justify-between items-center">
+            <div className="w-full bg-mist dark:bg-gray-800/80 border border-line dark:border-gray-700 rounded-lg p-3 text-sm text-ink dark:text-gray-100 flex justify-between items-center">
               <span className="font-bold text-base font-mono text-primary dark:text-primary-soft">
                 {formatJODNumber(result.maxInstallment)}
               </span>
-              <span className="text-xs font-semibold text-gray-500">دينار</span>
+              <span className="text-xs font-semibold text-ink-soft">دينار</span>
             </div>
           </div>
 
@@ -246,69 +255,69 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
         {/* Results Panel */}
         <div className="lg:col-span-7 flex flex-col gap-4">
           
-          <div className="bg-white dark:bg-surface-dark p-6 rounded-xl border border-line dark:border-gray-800 shadow-xs transition-colors">
+          <div className="bg-surface dark:bg-surface-dark p-6 rounded-xl border border-line dark:border-gray-800 shadow-xs transition-colors">
             
             <h2 className="text-xl font-bold text-primary dark:text-primary-soft mb-5 flex items-center gap-2">
               <Receipt className="w-6 h-6 text-primary dark:text-primary-soft" />
               <span>تفاصيل النتيجة الحسابية</span>
             </h2>
 
-            <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800">
+            <div className="overflow-x-auto rounded-xl border border-line dark:border-gray-800">
               <table className="w-full text-right border-collapse text-sm">
                 <tbody>
                   
-                  <tr className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
-                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">صافي التمويل</th>
-                    <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
+                  <tr className="bg-surface dark:bg-surface-dark border-b border-line dark:border-gray-800">
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-ink-soft dark:text-gray-300">صافي التمويل</th>
+                    <td className="py-3 px-4 font-bold font-mono text-ink dark:text-white">
                       {formatJODNumber(result.netFinancing)}
                     </td>
                   </tr>
 
-                  <tr className="bg-canvas dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
-                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">نسبة الربح</th>
-                    <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
+                  <tr className="bg-canvas dark:bg-gray-800/40 border-b border-line dark:border-gray-800">
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-ink-soft dark:text-gray-300">نسبة الربح</th>
+                    <td className="py-3 px-4 font-bold font-mono text-ink dark:text-white">
                       {result.profitRate}%
                     </td>
                   </tr>
 
-                  <tr className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
-                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">الربح السنوي</th>
-                    <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
+                  <tr className="bg-surface dark:bg-surface-dark border-b border-line dark:border-gray-800">
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-ink-soft dark:text-gray-300">الربح السنوي</th>
+                    <td className="py-3 px-4 font-bold font-mono text-ink dark:text-white">
                       {formatJODNumber(result.annualProfit)}
                     </td>
                   </tr>
 
-                  <tr className="bg-canvas dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
-                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">إجمالي الربح</th>
-                    <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
+                  <tr className="bg-canvas dark:bg-gray-800/40 border-b border-line dark:border-gray-800">
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-ink-soft dark:text-gray-300">إجمالي الربح</th>
+                    <td className="py-3 px-4 font-bold font-mono text-ink dark:text-white">
                       {formatJODNumber(result.totalProfit)}
                     </td>
                   </tr>
 
-                  <tr className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
-                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">المبلغ المطلوب سداده</th>
-                    <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
+                  <tr className="bg-surface dark:bg-surface-dark border-b border-line dark:border-gray-800">
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-ink-soft dark:text-gray-300">المبلغ المطلوب سداده</th>
+                    <td className="py-3 px-4 font-bold font-mono text-ink dark:text-white">
                       {formatJODNumber(result.totalPayable)}
                     </td>
                   </tr>
 
-                  <tr className="bg-canvas dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
-                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">تأمين سنوي</th>
-                    <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
+                  <tr className="bg-canvas dark:bg-gray-800/40 border-b border-line dark:border-gray-800">
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-ink-soft dark:text-gray-300">تأمين سنوي</th>
+                    <td className="py-3 px-4 font-bold font-mono text-ink dark:text-white">
                       {formatJODNumber(result.annualInsurance)}
                     </td>
                   </tr>
 
-                  <tr className="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
-                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">إجمالي التأمين</th>
-                    <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
+                  <tr className="bg-surface dark:bg-surface-dark border-b border-line dark:border-gray-800">
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-ink-soft dark:text-gray-300">إجمالي التأمين</th>
+                    <td className="py-3 px-4 font-bold font-mono text-ink dark:text-white">
                       {formatJODNumber(result.totalInsurance)}
                     </td>
                   </tr>
 
-                  <tr className="bg-canvas dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
-                    <th scope="row" className="py-3 px-4 text-right font-medium text-gray-600 dark:text-gray-300">الإجمالي مع التأمين</th>
-                    <td className="py-3 px-4 font-bold font-mono text-gray-900 dark:text-white">
+                  <tr className="bg-canvas dark:bg-gray-800/40 border-b border-line dark:border-gray-800">
+                    <th scope="row" className="py-3 px-4 text-right font-medium text-ink-soft dark:text-gray-300">الإجمالي مع التأمين</th>
+                    <td className="py-3 px-4 font-bold font-mono text-ink dark:text-white">
                       {formatJODNumber(result.totalWithInsurance)}
                     </td>
                   </tr>
@@ -344,9 +353,9 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
               
               <button
                 onClick={handleSaveCalculation}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+                className="flex items-center gap-2 bg-mist dark:bg-gray-800 border border-line dark:border-gray-700 text-ink dark:text-gray-200 px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer"
               >
-                <Save className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <Save className="w-4 h-4 text-ink-soft dark:text-gray-400" />
                 <span>حفظ الحسبة</span>
               </button>
 
@@ -360,7 +369,7 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
 
               <button
                 onClick={() => setShowPrintModal(true)}
-                className="flex items-center gap-2 bg-white dark:bg-surface-dark border-2 border-primary text-primary dark:text-primary-soft dark:border-primary-soft px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-primary/10 transition-colors cursor-pointer active:scale-95"
+                className="flex items-center gap-2 bg-surface dark:bg-surface-dark border-2 border-primary text-primary dark:text-primary-soft dark:border-primary-soft px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-primary/10 transition-colors cursor-pointer active:scale-95"
               >
                 <Printer className="w-4 h-4" />
                 <span>اطبع النتيجة</span>
@@ -373,7 +382,7 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({ profile, onSaveR
           {/* Disclaimer Info Box */}
           <div className="bg-mist dark:bg-gray-800/60 p-4 rounded-xl border border-line dark:border-gray-700 flex items-start gap-3">
             <Info className="w-5 h-5 text-teal dark:text-teal-light mt-0.5 shrink-0" />
-            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+            <p className="text-xs text-ink-soft dark:text-gray-300 leading-relaxed">
               هذه الحسبة تقريبية وقد تختلف قليلاً عند التنفيذ الفعلي بناءً على سياسات الجمعية المحدثة. الحد الأعلى للاقتطاع هو 40% من الراتب الصافي.
             </p>
           </div>

@@ -110,7 +110,7 @@ export default function App() {
             type="button"
             onClick={clearError}
             aria-label="إغلاق رسالة الخطأ"
-            className="shrink-0 rounded-md p-1 text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            className="shrink-0 rounded-md p-1 text-white/80 hover:text-white hover:bg-surface/10 transition-colors cursor-pointer"
           >
             ✕
           </button>
@@ -183,11 +183,11 @@ export default function App() {
       />
 
       {/* Footer for Desktop */}
-      <footer className="bg-white dark:bg-canvas-dark border-t border-gray-200 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400 py-5 mt-auto hidden md:block no-print">
+      <footer className="bg-surface dark:bg-canvas-dark border-t border-line dark:border-gray-800 text-xs text-ink-soft dark:text-gray-400 py-5 mt-auto hidden md:block no-print">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row-reverse justify-between items-center gap-4 md:pr-72">
           <span>© 2026 جمعية موظفي بلدية مادبا الكبرى - جميع الحقوق محفوظة</span>
           <div className="flex items-center gap-6">
-            <span className="text-gray-600 dark:text-gray-400">
+            <span className="text-ink-soft dark:text-gray-400">
               تصميم وتطوير بواسطة{' '}
               <a
                 href="https://www.abdoocoder.dev/"
@@ -203,7 +203,7 @@ export default function App() {
       </footer>
 
       {/* Mobile Footer Credit */}
-      <div className="block md:hidden text-center py-3 text-xs text-gray-500 dark:text-gray-400 bg-white/80 dark:bg-canvas-dark/80 border-t border-gray-200 dark:border-gray-800 mb-16 no-print">
+      <div className="block md:hidden text-center py-3 text-xs text-ink-soft dark:text-gray-400 bg-surface/80 dark:bg-canvas-dark/80 border-t border-line dark:border-gray-800 mb-16 no-print">
         تصميم وتطوير بواسطة{' '}
         <a
           href="https://www.abdoocoder.dev/"

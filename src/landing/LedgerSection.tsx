@@ -35,7 +35,7 @@ export default function LedgerSection({ input }: LedgerSectionProps) {
               <div key={line.id} className="flex items-center justify-between gap-3 py-2.5">
                 <div>
                   <p className="text-[13.5px] font-medium text-[#eff1f3]">{line.label}</p>
-                  {line.note ? <p className="text-[11.5px] text-[#9db8d4]">{line.note}</p> : null}
+                  {line.note ? <p className="text-xs text-[#9db8d4]">{line.note}</p> : null}
                 </div>
                 <span className="landing-figures-sm font-semibold text-[#eff1f3]">
                   {formatJOD(line.amount)} JOD
@@ -58,7 +58,7 @@ export default function LedgerSection({ input }: LedgerSectionProps) {
               <div key={line.id} className="flex items-center justify-between gap-3 py-2.5">
                 <div>
                   <p className="text-[13.5px] font-medium text-[#eff1f3]">{line.label}</p>
-                  {line.note ? <p className="text-[11.5px] text-[#9db8d4]">{line.note}</p> : null}
+                  {line.note ? <p className="text-xs text-[#9db8d4]">{line.note}</p> : null}
                 </div>
                 <span className="landing-figures-sm font-semibold text-[#eff1f3]">
                   {formatJOD(line.amount)} JOD
@@ -93,7 +93,7 @@ export default function LedgerSection({ input }: LedgerSectionProps) {
         </span>
       </div>
 
-      <p className="mt-3 text-[11.5px] leading-relaxed text-[#9db8d4]">
+      <p className="mt-3 text-xs leading-relaxed text-[#9db8d4]">
         الربح ثابت وفق سياسة الجمعية، والاقتطاع محدد بسقف نظامي، والتأمين تقدير تكلفة سنوي وليس رسوم
         بنكية.
       </p>

@@ -15,7 +15,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
   ];
 
   return (
-    <nav aria-label="التنقل السفلي" className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white dark:bg-canvas-dark border-t border-line dark:border-gray-800 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] flex justify-around items-center h-16 px-2">
+    <nav aria-label="التنقل السفلي" className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-surface dark:bg-canvas-dark border-t border-line dark:border-gray-800 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] flex justify-around items-center h-16 px-2">
       {items.map((item) => {
         const Icon = item.icon;
         const isActive = activeTab === item.id;
@@ -23,7 +23,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            aria-current={isActive ? 'page' : undefined}
+            aria-current={isActive ? 'true' : undefined}
             className={`flex flex-col items-center justify-center w-full py-1 cursor-pointer transition-all ${
               isActive
                 ? 'text-primary dark:text-primary-soft font-bold'

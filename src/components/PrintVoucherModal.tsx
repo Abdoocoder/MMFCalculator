@@ -98,17 +98,17 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
       aria-modal="true"
       aria-label="معاينة طباعة نتيجة الحسبة"
     >
-      <div className="bg-white dark:bg-surface-dark text-ink dark:text-ink-light rounded-2xl max-w-2xl w-full shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden my-8">
+      <div className="bg-surface dark:bg-surface-dark text-ink dark:text-ink-light rounded-2xl max-w-2xl w-full shadow-2xl border border-line dark:border-gray-800 overflow-hidden my-8">
         
         {/* Modal Controls Header */}
-        <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700 no-print">
+        <div className="flex justify-between items-center p-4 bg-mist dark:bg-gray-800/80 border-b border-line dark:border-gray-700 no-print">
           <div className="flex items-center gap-2 text-primary dark:text-primary-soft font-bold">
             <Printer className="w-5 h-5" />
             <span>معاينة طباعة نتيجة الحسبة</span>
           </div>
           <button
             onClick={onClose}
-            className="p-2.5 rounded-lg text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+            className="p-2.5 rounded-lg text-ink-soft hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
             aria-label="إغلاق النافذة"
           >
             <X className="w-5 h-5" />
@@ -116,7 +116,7 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
         </div>
 
         {/* Printable Paper Voucher Content */}
-        <div className="p-6 sm:p-8 space-y-6 bg-white text-gray-900" id="printable-voucher">
+        <div className="p-6 sm:p-8 space-y-6 bg-surface text-ink" id="printable-voucher">
           
           {/* Header Branding */}
           <div className="text-center border-b-2 border-primary pb-5 space-y-2">
@@ -126,33 +126,33 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
             <h2 className="text-xl sm:text-2xl font-bold text-primary">
               كشف حاسبة المرابحة الإسلامية والتمويل
             </h2>
-            <p className="text-xs text-gray-600">
+            <p className="text-xs text-ink-soft">
               التاريخ: {currentDate} | الرقم المرجعي: {displayRefNo}
             </p>
           </div>
 
           {/* Member Info Grid */}
-          <div className="grid grid-cols-2 gap-4 text-sm bg-gray-50 p-4 rounded-xl border border-gray-200">
+          <div className="grid grid-cols-2 gap-4 text-sm bg-mist p-4 rounded-xl border border-line">
             <div>
-              <span className="text-gray-500 block text-xs">اسم العضو:</span>
-              <span className="font-bold text-gray-800">{profile.fullName}</span>
+              <span className="text-ink-soft block text-xs">اسم العضو:</span>
+              <span className="font-bold text-ink">{profile.fullName}</span>
             </div>
             <div>
-              <span className="text-gray-500 block text-xs">رقم العضوية:</span>
-              <span className="font-bold text-gray-800 font-mono">{profile.membershipNo}</span>
+              <span className="text-ink-soft block text-xs">رقم العضوية:</span>
+              <span className="font-bold text-ink font-mono">{profile.membershipNo}</span>
             </div>
             <div>
-              <span className="text-gray-500 block text-xs">القسم / المديرية:</span>
-              <span className="font-bold text-gray-800">{profile.department}</span>
+              <span className="text-ink-soft block text-xs">القسم / المديرية:</span>
+              <span className="font-bold text-ink">{profile.department}</span>
             </div>
             <div>
-              <span className="text-gray-500 block text-xs">صافي الراتب المصرح:</span>
-              <span className="font-bold text-gray-800">{formatJODNumber(input.netIncome)} دينار</span>
+              <span className="text-ink-soft block text-xs">صافي الراتب المصرح:</span>
+              <span className="font-bold text-ink">{formatJODNumber(input.netIncome)} دينار</span>
             </div>
           </div>
 
           {/* Table Breakdown */}
-          <div className="overflow-hidden rounded-xl border border-gray-300">
+          <div className="overflow-hidden rounded-xl border border-line">
             <table className="w-full text-right text-sm">
               <thead className="bg-primary text-white font-bold">
                 <tr>
@@ -162,36 +162,36 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
               </thead>
               <tbody className="divide-y divide-gray-200">
                 <tr>
-                  <td className="py-2 px-4 text-gray-700">نوع المنتج التمويلي</td>
-                  <td className="py-2 px-4 text-left font-bold text-gray-900">{productName}</td>
+                  <td className="py-2 px-4 text-ink">نوع المنتج التمويلي</td>
+                  <td className="py-2 px-4 text-left font-bold text-ink">{productName}</td>
                 </tr>
-                <tr className="bg-gray-50">
-                  <td className="py-2 px-4 text-gray-700">المبلغ المطلوب (صافي التمويل)</td>
-                  <td className="py-2 px-4 text-left font-bold text-gray-900">{formatJODNumber(result.netFinancing)}</td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 text-gray-700">نسبة الربح المعتمدة</td>
-                  <td className="py-2 px-4 text-left font-bold text-gray-900">{result.profitRate}%</td>
-                </tr>
-                <tr className="bg-gray-50">
-                  <td className="py-2 px-4 text-gray-700">مدة السداد</td>
-                  <td className="py-2 px-4 text-left font-bold text-gray-900">{input.durationYears} سنة ({input.durationYears * 12} شهر)</td>
+                <tr className="bg-mist">
+                  <td className="py-2 px-4 text-ink">المبلغ المطلوب (صافي التمويل)</td>
+                  <td className="py-2 px-4 text-left font-bold text-ink">{formatJODNumber(result.netFinancing)}</td>
                 </tr>
                 <tr>
-                  <td className="py-2 px-4 text-gray-700">إجمالي الأرباح المستحقة</td>
-                  <td className="py-2 px-4 text-left font-bold text-gray-900">{formatJODNumber(result.totalProfit)}</td>
+                  <td className="py-2 px-4 text-ink">نسبة الربح المعتمدة</td>
+                  <td className="py-2 px-4 text-left font-bold text-ink">{result.profitRate}%</td>
                 </tr>
-                <tr className="bg-gray-50">
-                  <td className="py-2 px-4 text-gray-700">إجمالي رسوم التأمين</td>
-                  <td className="py-2 px-4 text-left font-bold text-gray-900">{formatJODNumber(result.totalInsurance)}</td>
+                <tr className="bg-mist">
+                  <td className="py-2 px-4 text-ink">مدة السداد</td>
+                  <td className="py-2 px-4 text-left font-bold text-ink">{input.durationYears} سنة ({input.durationYears * 12} شهر)</td>
                 </tr>
                 <tr>
-                  <td className="py-2 px-4 text-gray-700">إجمالي المبلغ المطلوب سداده</td>
-                  <td className="py-2 px-4 text-left font-bold text-gray-900">{formatJODNumber(result.totalWithInsurance)}</td>
+                  <td className="py-2 px-4 text-ink">إجمالي الأرباح المستحقة</td>
+                  <td className="py-2 px-4 text-left font-bold text-ink">{formatJODNumber(result.totalProfit)}</td>
                 </tr>
-                <tr className="bg-gray-50">
-                  <td className="py-2 px-4 text-gray-700">الحد الأعلى المسموح للقسط (40%)</td>
-                  <td className="py-2 px-4 text-left font-bold text-gray-900">{formatJODNumber(result.maxInstallment)}</td>
+                <tr className="bg-mist">
+                  <td className="py-2 px-4 text-ink">إجمالي رسوم التأمين</td>
+                  <td className="py-2 px-4 text-left font-bold text-ink">{formatJODNumber(result.totalInsurance)}</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-4 text-ink">إجمالي المبلغ المطلوب سداده</td>
+                  <td className="py-2 px-4 text-left font-bold text-ink">{formatJODNumber(result.totalWithInsurance)}</td>
+                </tr>
+                <tr className="bg-mist">
+                  <td className="py-2 px-4 text-ink">الحد الأعلى المسموح للقسط (40%)</td>
+                  <td className="py-2 px-4 text-left font-bold text-ink">{formatJODNumber(result.maxInstallment)}</td>
                 </tr>
                 <tr className="bg-primary text-white font-bold">
                   <td className="py-3 px-4 text-base">القسط الشهري النهائي</td>
@@ -221,27 +221,27 @@ export const PrintVoucherModal: React.FC<PrintVoucherModalProps> = ({
           </div>
 
           {/* Signatures Footer */}
-          <div className="pt-6 grid grid-cols-2 gap-8 text-center text-xs text-gray-600 border-t border-gray-200 mt-8">
+          <div className="pt-6 grid grid-cols-2 gap-8 text-center text-xs text-ink-soft border-t border-line mt-8">
             <div>
-              <p className="font-bold text-gray-800 mb-8">توقيع الموظف مقدم الطلب</p>
+              <p className="font-bold text-ink mb-8">توقيع الموظف مقدم الطلب</p>
               <p className="border-t border-gray-400 pt-1 w-36 mx-auto">................................</p>
             </div>
             <div>
-              <p className="font-bold text-gray-800 mb-8">خاتم وتوقيع رئيس الدائرة المالية</p>
+              <p className="font-bold text-ink mb-8">خاتم وتوقيع رئيس الدائرة المالية</p>
               <p className="border-t border-gray-400 pt-1 w-36 mx-auto">................................</p>
             </div>
           </div>
 
-          <div className="mt-6 text-center text-xs text-gray-500 pt-2 border-t border-gray-100">
+          <div className="mt-6 text-center text-xs text-ink-soft pt-2 border-t border-gray-100">
             تصميم وتطوير بواسطة Abdoo Coder (https://www.abdoocoder.dev/)
           </div>
         </div>
 
         {/* Modal Bottom Actions */}
-        <div className="p-4 bg-gray-50 dark:bg-gray-800/80 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3 no-print">
+        <div className="p-4 bg-mist dark:bg-gray-800/80 border-t border-line dark:border-gray-700 flex justify-end gap-3 no-print">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+            className="px-4 py-2 text-sm rounded-xl border border-line dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
           >
             إغلاق
           </button>

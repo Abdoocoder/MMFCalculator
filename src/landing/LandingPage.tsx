@@ -20,6 +20,13 @@ const DEFAULT_INPUT: CalculationInput = {
   durationYears: 1,
 };
 
+const NAV_LINKS = [
+  { href: '#products', label: 'المنتجات' },
+  { href: '#ledger', label: 'دفتر التسوية' },
+  { href: '#how', label: 'كيف تعمل' },
+  { href: '#announcements', label: 'إعلانات الجمعية' },
+];
+
 function RevealSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const { ref, visible } = useReveal<HTMLDivElement>();
   return (
@@ -40,7 +47,14 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
       productId,
       durationYears: prev.durationYears > p.maxYears ? p.maxYears : prev.durationYears,
     }));
-    calculatorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    calculatorRef.current?.scrollIntoView({
+      behavior:
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'auto'
+          : 'smooth',
+      block: 'start',
+    });
   };
 
   const certifiedStrip = [
@@ -54,34 +68,38 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
       {/* Top bar */}
       <header className="sticky top-0 z-20 border-b border-white/10 bg-[#062a4a]/90 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-          <a href="#" className="flex items-center gap-2.5" aria-label="جمعية موظفي بلدية مادبا الكبرى">
+          <a href="/" className="flex items-center gap-2.5" aria-label="جمعية موظفي بلدية مادبا الكبرى">
             <StarSeal certified size={26} />
             <span className="text-[15px] font-bold leading-tight">
               جمعية موظفي بلدية مادبا الكبرى
             </span>
           </a>
           <nav className="hidden items-center gap-5 md:flex" aria-label="التنقل الرئيسي">
-            <a href="#products" className="text-[13.5px] text-[#cfe0f2] transition-colors hover:text-[#eff1f3]">
-              المنتجات
-            </a>
-            <a href="#ledger" className="text-[13.5px] text-[#cfe0f2] transition-colors hover:text-[#eff1f3]">
-              دفتر التسوية
-            </a>
-            <a href="#how" className="text-[13.5px] text-[#cfe0f2] transition-colors hover:text-[#eff1f3]">
-              كيف تعمل
-            </a>
-            <a href="#announcements" className="text-[13.5px] text-[#cfe0f2] transition-colors hover:text-[#eff1f3]">
-              إعلانات الجمعية
-            </a>
+            {NAV_LINKS.map((l) => (
+              <a key={l.href} href={l.href} className="text-[13.5px] text-[#cfe0f2] transition-colors hover:text-[#eff1f3]">
+                {l.label}
+              </a>
+            ))}
           </nav>
           <button
             type="button"
             onClick={onLaunchApp}
-            className="rounded-md bg-[#bcebe5] px-4 py-2 text-[13.5px] font-bold text-[#062a4a] transition-colors hover:bg-[#d9f6f2] focus-visible:outline-[#bcebe5]"
+            className="min-h-11 rounded-md bg-[#bcebe5] px-4 text-[13.5px] font-bold text-[#062a4a] transition-colors hover:bg-[#d9f6f2] focus-visible:outline-[#bcebe5]"
           >
             افتح الحاسبة
           </button>
         </div>
+        <nav className="flex gap-1 overflow-x-auto border-t border-white/10 px-4 py-2 md:hidden" aria-label="التنقل الرئيسي">
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-md px-3 text-[13px] text-[#cfe0f2] transition-colors hover:text-[#eff1f3]"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
       </header>
 
       {/* Hero */}
@@ -107,7 +125,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
                   <StarSeal certified size={16} />
                   <div className="flex items-baseline gap-2">
                     <span className="landing-figures-sm font-semibold text-[#bcebe5]">{t.value}</span>
-                    <span className="text-[12.5px] text-[#9db8d4]">{t.label}</span>
+                    <span className="text-[13px] text-[#9db8d4]">{t.label}</span>
                   </div>
                 </div>
               ))}
@@ -128,7 +146,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
                 كيف تُحتسب الأقساط
               </a>
             </div>
-            <p className="mt-4 text-[12.5px] text-[#9db8d4]">
+            <p className="mt-4 text-[13px] text-[#9db8d4]">
               الخدمة متاحة لأعضاء الجمعية فقط، وفق أحكام المرابحة الإسلامية.
             </p>
           </RevealSection>
@@ -212,7 +230,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
                   <StarSeal size={18} />
                   <div>
                     <h3 className="text-[14.5px] font-bold text-[#eff1f3]">{p.name}</h3>
-                    <p className="mt-0.5 text-[12.5px] text-[#9db8d4]">{p.description}</p>
+                    <p className="mt-0.5 text-[13px] text-[#9db8d4]">{p.description}</p>
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-5">
@@ -225,7 +243,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
                   <button
                     type="button"
                     onClick={() => selectProduct(p.id)}
-                    className="rounded-md border border-[#bcebe5]/60 px-4 py-2 text-[13px] font-bold text-[#bcebe5] transition-colors hover:bg-[#bcebe5]/10"
+                    className="min-h-11 rounded-md border border-[#bcebe5]/60 px-4 text-[13px] font-bold text-[#bcebe5] transition-colors hover:bg-[#bcebe5]/10"
                   >
                     احسب هذا المنتج
                   </button>
@@ -358,7 +376,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               الجمعية.
             </p>
           </div>
-          <div className="text-[12.5px] leading-[1.9] text-[#9db8d4] md:text-left">
+          <div className="text-[13px] leading-[1.9] text-[#9db8d4] md:text-left">
             <p>
               تصميم وتطوير بواسطة{' '}
               <a
@@ -370,7 +388,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
                 Abdoo Coder
               </a>
             </p>
-            <p className="mt-1 text-[11.5px]">الأرقام تقديرية وتخضع للتدقيق المالي النهائي.</p>
+            <p className="mt-1 text-xs">الأرقام تقديرية وتخضع للتدقيق المالي النهائي.</p>
           </div>
         </div>
       </footer>

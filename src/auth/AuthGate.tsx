@@ -12,7 +12,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-canvas dark:bg-canvas-dark font-tajawal">
-        <p className="text-sm text-gray-600 dark:text-gray-300">جارٍ التحميل...</p>
+        <p className="text-sm text-ink-soft dark:text-gray-300">جارٍ التحميل...</p>
       </div>
     );
   }
@@ -24,7 +24,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
   if (profile === undefined) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-canvas dark:bg-canvas-dark font-tajawal">
-        <p className="text-sm text-gray-600 dark:text-gray-300">جارٍ تحميل بياناتك...</p>
+        <p className="text-sm text-ink-soft dark:text-gray-300">جارٍ تحميل بياناتك...</p>
       </div>
     );
   }

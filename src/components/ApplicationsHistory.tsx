@@ -56,13 +56,13 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
     <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6">
       
       {/* Title & Filter bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-surface-dark p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-xs">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-surface dark:bg-surface-dark p-5 rounded-2xl border border-line dark:border-gray-800 shadow-xs">
         <div>
           <h1 className="text-xl font-bold text-primary dark:text-primary-soft flex items-center gap-2">
             <FileText className="w-6 h-6" />
             <span>سجل الطلبات والحسبات المحفوظة</span>
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs text-ink-soft dark:text-gray-400 mt-1">
             استعرض الطلبات المقدمة للجمعية والحسبات المحفوظة مسبقاً
           </p>
         </div>
@@ -71,15 +71,15 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
         <div
           role="group"
           aria-label="تصفية حسب حالة الطلب"
-          className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto"
+          className="flex gap-1 bg-mist dark:bg-gray-800 p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto"
         >
           <button
             onClick={() => setFilter('all')}
             aria-pressed={filter === 'all'}
-            className={`px-3 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+            className={`min-h-11 px-3 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               filter === 'all'
-                ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-xs'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+                ? 'bg-surface dark:bg-gray-700 text-primary dark:text-white shadow-xs'
+                : 'text-ink-soft dark:text-gray-400 hover:text-ink'
             }`}
           >
             الكل ({records.length})
@@ -87,10 +87,10 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
           <button
             onClick={() => setFilter('pending')}
             aria-pressed={filter === 'pending'}
-            className={`px-3 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+            className={`min-h-11 px-3 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               filter === 'pending'
-                ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-xs'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+                ? 'bg-surface dark:bg-gray-700 text-primary dark:text-white shadow-xs'
+                : 'text-ink-soft dark:text-gray-400 hover:text-ink'
             }`}
           >
             قيد الدراسة
@@ -98,10 +98,10 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
           <button
             onClick={() => setFilter('approved')}
             aria-pressed={filter === 'approved'}
-            className={`px-3 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+            className={`min-h-11 px-3 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               filter === 'approved'
-                ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-xs'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+                ? 'bg-surface dark:bg-gray-700 text-primary dark:text-white shadow-xs'
+                : 'text-ink-soft dark:text-gray-400 hover:text-ink'
             }`}
           >
             المعتمدة
@@ -109,10 +109,10 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
           <button
             onClick={() => setFilter('draft')}
             aria-pressed={filter === 'draft'}
-            className={`px-3 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+            className={`min-h-11 px-3 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               filter === 'draft'
-                ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-xs'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+                ? 'bg-surface dark:bg-gray-700 text-primary dark:text-white shadow-xs'
+                : 'text-ink-soft dark:text-gray-400 hover:text-ink'
             }`}
           >
             المسودات
@@ -122,23 +122,23 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
 
       {/* Search Input */}
       <div className="relative">
-        <Search className="w-5 h-5 text-gray-500 absolute right-3.5 top-3" />
+        <Search className="w-5 h-5 text-ink-soft absolute right-3.5 top-3" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="ابحث بالرقم المرجعي أو نوع القرض..."
           aria-label="البحث في السجلات"
-          className="w-full pr-11 pl-4 py-2.5 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full pr-11 pl-4 py-2.5 bg-surface dark:bg-surface-dark border border-line dark:border-gray-800 rounded-xl text-sm text-ink dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
 
       {/* Records List */}
       {filteredRecords.length === 0 ? (
-        <div className="bg-white dark:bg-surface-dark p-12 text-center rounded-2xl border border-gray-200 dark:border-gray-800 space-y-3">
-          <FileText className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto" />
-          <h2 className="text-base font-bold text-gray-700 dark:text-gray-300">لا توجد سجلات مطابقة</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+        <div className="bg-surface dark:bg-surface-dark p-12 text-center rounded-2xl border border-line dark:border-gray-800 space-y-3">
+          <FileText className="w-12 h-12 text-gray-300 dark:text-gray-400 mx-auto" />
+          <h2 className="text-base font-bold text-ink dark:text-gray-300">لا توجد سجلات مطابقة</h2>
+          <p className="text-xs text-ink-soft dark:text-gray-400">
             يمكنك إجراء حسبة جديدة من قسم حاسبة القروض وحفظها أو تقديمها.
           </p>
         </div>
@@ -147,7 +147,7 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
           {filteredRecords.map((rec) => (
             <div
               key={rec.id}
-              className="bg-white dark:bg-surface-dark p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-xs flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-primary dark:hover:border-primary-soft transition-all"
+              className="bg-surface dark:bg-surface-dark p-5 rounded-xl border border-line dark:border-gray-800 shadow-xs flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-primary dark:hover:border-primary-soft transition-all"
             >
               <div className="space-y-2 text-right">
                 <div className="flex items-center gap-3">
@@ -157,13 +157,13 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
                   {getStatusBadge(rec.status)}
                 </div>
 
-                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-600 dark:text-gray-300">
-                  <span>الرقم المرجعي: <strong className="font-mono text-gray-900 dark:text-white">{rec.referenceNo}</strong></span>
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-soft dark:text-gray-300">
+                  <span>الرقم المرجعي: <strong className="font-mono text-ink dark:text-white">{rec.referenceNo}</strong></span>
                   <span>التاريخ: <strong>{rec.date}</strong></span>
                   <span>مدة السداد: <strong>{rec.durationYears} سنوات</strong></span>
                 </div>
 
-                <div className="flex flex-wrap gap-x-4 text-xs font-mono pt-1 text-gray-800 dark:text-gray-200">
+                <div className="flex flex-wrap gap-x-4 text-xs font-mono pt-1 text-ink dark:text-gray-200">
                   <span>مبلغ التمويل: <strong className="text-primary dark:text-primary-soft">{formatJODNumber(rec.loanAmount)} د.أ</strong></span>
                   <span>القسط الشهري: <strong className="text-emerald-700 dark:text-emerald-400">{formatJODNumber(rec.monthlyInstallment)} د.أ/شهر</strong></span>
                 </div>
@@ -173,7 +173,7 @@ export const ApplicationsHistory: React.FC<ApplicationsHistoryProps> = ({
               <div className="flex items-center gap-2 self-end sm:self-center">
                 <button
                   onClick={() => onPrintRecord(rec)}
-                  className="flex items-center gap-1.5 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white dark:hover:bg-primary-light text-gray-700 dark:text-gray-200 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                  className="flex items-center gap-1.5 px-4 min-h-11 bg-mist dark:bg-gray-800 hover:bg-primary hover:text-white dark:hover:bg-primary-light text-ink dark:text-gray-200 rounded-lg text-xs font-bold transition-all cursor-pointer"
                   title="طباعة كشف الحسبة"
                 >
                   <Printer className="w-4 h-4" />

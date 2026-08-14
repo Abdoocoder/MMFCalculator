@@ -1,8 +1,20 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HomeDashboard } from './HomeDashboard';
 import type { LoanRecord, MemberProfile } from '../types';
+
+type Announcement = { id: string; title: string; content: string; date: string; type: string };
+
+const announcements = vi.hoisted(() => ({
+  value: [] as Announcement[],
+}));
+
+vi.mock('../data/mockData', () => ({
+  get ASSOCIATION_ANNOUNCEMENTS() {
+    return announcements.value;
+  },
+}));
 
 const profile: MemberProfile = {
   id: 'mem_1',
@@ -46,6 +58,11 @@ const renderDashboard = (overrides: Partial<Parameters<typeof HomeDashboard>[0]>
   return props;
 };
 
+beforeAll(async () => {
+  const real = await vi.importActual<typeof import('../data/mockData')>('../data/mockData');
+  announcements.value = real.ASSOCIATION_ANNOUNCEMENTS;
+});
+
 describe('HomeDashboard', () => {
   it('uses a non-skipping heading order: h1 then h2 then h3', () => {
     renderDashboard();
@@ -68,5 +85,23 @@ describe('HomeDashboard', () => {
     expect(props.onNavigateToCalculator).toHaveBeenCalledTimes(1);
     await user.click(screen.getByRole('button', { name: /استعراض السجلات والطلبات/ }));
     expect(props.onNavigateToRecords).toHaveBeenCalledTimes(1);
+  });
+
+  it('derives the announcement month label from the latest announcement date', () => {
+    renderDashboard();
+    expect(screen.getByText('أغسطس 2026')).toBeInTheDocument();
+  });
+
+  it('renders an empty month label when there are no announcements', () => {
+    const saved = announcements.value;
+    announcements.value = [];
+    try {
+      renderDashboard();
+      const heading = screen.getByRole('heading', { name: 'إعلانات وتعليمات الجمعية' });
+      expect(heading.parentElement!.lastElementChild).toBeEmptyDOMElement();
+      expect(screen.queryByText(/اعتماد المرابحة الإسلامية/)).not.toBeInTheDocument();
+    } finally {
+      announcements.value = saved;
+    }
   });
 });

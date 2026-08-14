@@ -17,7 +17,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, profi
   ];
 
   return (
-    <nav aria-label="التنقل الرئيسي للأعضاء" className="hidden md:flex flex-col rtl bg-white dark:bg-canvas-dark text-teal dark:text-teal-light h-screen w-72 fixed right-0 top-0 z-30 border-l border-line dark:border-gray-800 shadow-md pt-16 transition-colors">
+    <nav aria-label="التنقل الرئيسي للأعضاء" className="hidden md:flex flex-col rtl bg-surface dark:bg-canvas-dark text-teal dark:text-teal-light h-screen w-72 fixed right-0 top-0 z-30 border-l border-line dark:border-gray-800 shadow-md pt-16 transition-colors">
       <div className="p-5 border-b border-line dark:border-gray-800 bg-canvas dark:bg-surface-deep">
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-primary/10 text-primary dark:text-primary-soft rounded-xl">
@@ -42,14 +42,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, profi
             <li key={item.id}>
               <button
                 onClick={() => setActiveTab(item.id)}
-                aria-current={isActive ? 'page' : undefined}
+                aria-current={isActive ? 'true' : undefined}
                 className={`w-full flex items-center gap-4 px-6 py-3.5 transition-all duration-200 cursor-pointer text-right ${
                   isActive
                     ? 'bg-teal-light dark:bg-primary-light/30 text-primary dark:text-primary-soft font-bold'
                     : 'text-ink-soft dark:text-gray-300 hover:bg-mist dark:hover:bg-gray-800'
                 }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-primary dark:text-primary-soft' : 'text-gray-500'}`} />
+                <Icon className={`w-5 h-5 ${isActive ? 'text-primary dark:text-primary-soft' : 'text-ink-soft'}`} />
                 <span className="text-base">{item.label}</span>
               </button>
             </li>

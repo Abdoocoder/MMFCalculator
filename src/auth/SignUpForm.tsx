@@ -65,7 +65,7 @@ export default function SignUpForm() {
   };
 
   const inputCls =
-    "w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm text-gray-900 dark:text-gray-100";
+    "w-full bg-surface dark:bg-gray-900 border border-line dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary text-sm text-ink dark:text-gray-100";
 
   const fields: { key: keyof typeof EMPTY; label: string; type?: string }[] = [
     { key: "membershipNo", label: "الرقم العضوي", type: "text" },
@@ -80,11 +80,11 @@ export default function SignUpForm() {
   if (done) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-canvas dark:bg-canvas-dark p-6 font-tajawal">
-        <div className="bg-white dark:bg-surface-dark p-8 rounded-xl border border-line dark:border-gray-800 shadow-sm text-center max-w-md">
+        <div className="bg-surface dark:bg-surface-dark p-8 rounded-xl border border-line dark:border-gray-800 shadow-sm text-center max-w-md">
           <p className="text-lg font-bold text-primary dark:text-primary-soft mb-1">
             تم إنشاء ملفك بنجاح
           </p>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
+          <p className="text-sm text-ink-soft dark:text-gray-300">
             أهلاً بك في منطقة الأعضاء. يمكنك الآن بدء الحسابات وتقديم الطلبات.
           </p>
         </div>
@@ -94,11 +94,11 @@ export default function SignUpForm() {
 
   return (
     <div className="min-h-screen bg-canvas dark:bg-canvas-dark flex items-center justify-center p-4 font-tajawal">
-      <div className="w-full max-w-lg bg-white dark:bg-surface-dark rounded-xl border border-line dark:border-gray-800 shadow-sm p-6 sm:p-8">
+      <div className="w-full max-w-lg bg-surface dark:bg-surface-dark rounded-xl border border-line dark:border-gray-800 shadow-sm p-6 sm:p-8">
         <h1 className="text-xl font-bold text-primary dark:text-primary-soft mb-1 text-center">
           أكمل ملفك العضوي
         </h1>
-        <p className="text-xs text-gray-500 dark:text-gray-400 text-center mb-6">
+        <p className="text-xs text-ink-soft dark:text-gray-400 text-center mb-6">
           هذه المعلومات تُنشئ ملفك لدى الجمعية ويمكنك تعديلها لاحقاً.
         </p>
         <form
@@ -110,7 +110,7 @@ export default function SignUpForm() {
         >
           {fields.map(({ key, label, type }) => (
             <div key={key} className="flex flex-col gap-1.5">
-              <label htmlFor={`signup-${key}`} className="text-xs font-bold text-gray-700 dark:text-gray-300 text-right">
+              <label htmlFor={`signup-${key}`} className="text-xs font-bold text-ink dark:text-gray-300 text-right">
                 {label}
               </label>
               <input

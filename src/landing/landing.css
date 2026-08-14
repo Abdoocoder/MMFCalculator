@@ -33,13 +33,13 @@
 
 /* Tabular numerals — the language of the notation world. */
 .landing-figures {
-  font-family: 'JetBrains Mono', 'Be Vietnam Pro', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
 
 .landing-figures-sm {
-  font-family: 'JetBrains Mono', 'Be Vietnam Pro', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
   font-size: 0.8125rem;

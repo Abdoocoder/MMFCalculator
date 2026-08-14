@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LoanCalculator } from './LoanCalculator';
 import type { LoanRecord, MemberProfile } from '../types';
@@ -65,5 +65,35 @@ describe('LoanCalculator', () => {
 
     const maxInstallmentLabel = screen.getByText(/الحد الأعلى للقسط الشهري المسموح/);
     expect(maxInstallmentLabel.tagName).toBe('SPAN');
+  });
+
+  it('shows a notification for the calculate action and auto-dismisses it', () => {
+    vi.useFakeTimers();
+    try {
+      render(<LoanCalculator profile={profile} onSaveRecord={vi.fn()} />);
+      fireEvent.click(screen.getByRole('button', { name: 'حساب' }));
+      expect(screen.getByRole('status')).toHaveTextContent('تم تحديث الحسبة بنجاح');
+
+      act(() => {
+        vi.advanceTimersByTime(3000);
+      });
+      expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('clears pending notification timers on unmount', () => {
+    vi.useFakeTimers();
+    try {
+      const { unmount } = render(<LoanCalculator profile={profile} onSaveRecord={vi.fn()} />);
+      fireEvent.click(screen.getByRole('button', { name: 'حفظ الحسبة' }));
+      expect(screen.getByRole('status')).toBeInTheDocument();
+
+      unmount();
+      expect(() => vi.advanceTimersByTime(10000)).not.toThrow();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

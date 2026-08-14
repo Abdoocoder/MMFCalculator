@@ -23,10 +23,10 @@ function Field({ label, unit, children }: { label: string; unit?: string; childr
 }
 
 const inputCls =
-  'w-full bg-transparent py-2.5 text-[15px] font-semibold text-[#eff1f3] outline-none placeholder:text-[#9db8d4] [color-scheme:dark]';
+  'w-full bg-transparent py-2.5 text-[15px] font-semibold text-[#eff1f3] outline-none placeholder:text-[#9db8d4] [color-scheme:dark] focus-visible:outline-2 focus-visible:outline-[#95ccff] focus-visible:outline-offset-2';
 
 const selectCls =
-  'w-full bg-transparent py-2.5 text-[15px] font-semibold text-[#eff1f3] outline-none [color-scheme:dark]';
+  'w-full bg-transparent py-2.5 text-[15px] font-semibold text-[#eff1f3] outline-none [color-scheme:dark] focus-visible:outline-2 focus-visible:outline-[#95ccff] focus-visible:outline-offset-2';
 
 export default function LiveCalculator({ input, onChange, onLaunchApp }: LiveCalculatorProps) {
   const result = useMemo(() => calculateLoan(input), [input]);
@@ -96,7 +96,7 @@ export default function LiveCalculator({ input, onChange, onLaunchApp }: LiveCal
           </select>
         </Field>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Field label="مبلغ التمويل" unit="JOD">
             <input
               type="number"
@@ -169,12 +169,12 @@ export default function LiveCalculator({ input, onChange, onLaunchApp }: LiveCal
           >
             <StarSeal certified={t.certified} size={18} />
             <span className="landing-figures-sm font-semibold text-[#eff1f3]">{t.value}</span>
-            <span className="text-[11px] text-[#9db8d4]">{t.label}</span>
+            <span className="text-xs text-[#9db8d4]">{t.label}</span>
           </div>
         ))}
       </div>
 
-      <p className="mt-3 text-center text-[11px] leading-relaxed text-[#9db8d4]">
+      <p className="mt-3 text-center text-xs leading-relaxed text-[#9db8d4]">
         كل نجمة = بند أثبتته الحاسبة لك الآن. الحساب يطابق صيغ الجمعية المعتمدة.
       </p>
 

@@ -249,12 +249,12 @@ describe('App with Convex queries and mutations', () => {
     expect(main).toHaveAttribute('tabindex', '-1');
   });
 
-  it('marks the active navigation item with aria-current="page"', () => {
+  it('marks the active navigation item with aria-current="true"', () => {
     render(<App />);
-    expect(screen.getByRole('button', { name: 'الحاسبة' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('button', { name: 'الحاسبة' })).toHaveAttribute('aria-current', 'true');
     expect(screen.getByRole('button', { name: 'حاسبة المرابحة' })).toHaveAttribute(
       'aria-current',
-      'page',
+      'true',
     );
     for (const home of screen.getAllByRole('button', { name: 'الرئيسية' })) {
       expect(home).not.toHaveAttribute('aria-current');

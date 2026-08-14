@@ -9,7 +9,7 @@ export default function SignInScreen() {
         <h1 className="text-2xl font-bold text-primary dark:text-primary-soft mb-2">
           منطقة الأعضاء
         </h1>
-        <p className="text-sm text-gray-600 dark:text-gray-300 max-w-md leading-relaxed">
+        <p className="text-sm text-ink-soft dark:text-gray-300 max-w-md leading-relaxed">
           سجّل الدخول للوصول إلى الحاسبة الكاملة، سجلّاتك، وطلبات التمويل بالمرابحة.
         </p>
       </div>
@@ -20,7 +20,7 @@ export default function SignInScreen() {
       >
         تسجيل الدخول
       </button>
-      <a href="/" className="text-sm text-gray-500 dark:text-gray-400 underline hover:text-primary transition-colors">
+      <a href="/" className="text-sm text-ink-soft dark:text-gray-400 underline hover:text-primary transition-colors">
         العودة إلى الصفحة الرئيسية
       </a>
     </div>
