@@ -5,7 +5,7 @@ import {
   updateStatusHandler,
   deleteDraftHandler,
 } from "./loanRecords";
-import { UNAUTHENTICATED } from "./helpers";
+import { UNAUTHENTICATED, FORBIDDEN } from "./helpers";
 import { Doc } from "./_generated/dataModel";
 
 type Row = Omit<Doc<"loanRecords">, "_id" | "_creationTime"> & { _id: string };
@@ -67,11 +67,52 @@ describe("loanRecords functions", () => {
     await expect(createHandler(ctx as never, { record: { ...recInput, status: "draft" } })).rejects.toThrow(UNAUTHENTICATED);
   });
 
+  it("create rejects a pre-approved status", async () => {
+    const ctx = makeCtx([], { subject: "user_1" });
+    await expect(
+      createHandler(ctx as never, { record: { ...recInput, status: "approved" } }),
+    ).rejects.toThrow(FORBIDDEN);
+    await expect(
+      createHandler(ctx as never, { record: { ...recInput, status: "rejected" } }),
+    ).rejects.toThrow(FORBIDDEN);
+    expect(ctx.db.insert).not.toHaveBeenCalled();
+  });
+
   it("updateStatus patches the status of a record the caller owns", async () => {
     const row: Row = { _id: "rec_1", userId: "user_1", ...recInput };
     const ctx = makeCtx([row], { subject: "user_1" });
     await updateStatusHandler(ctx as never, { id: "rec_1", status: "pending" });
     expect(ctx.db.patch).toHaveBeenCalledWith("rec_1", { status: "pending" });
+  });
+
+  it("updateStatus rejects any member transition that is not draft to pending", async () => {
+    const pendingRow: Row = { _id: "rec_1", userId: "user_1", ...recInput, status: "pending" };
+    const ctx = makeCtx([pendingRow], { subject: "user_1" });
+    await expect(
+      updateStatusHandler(ctx as never, { id: "rec_1", status: "approved" }),
+    ).rejects.toThrow(FORBIDDEN);
+    await expect(
+      updateStatusHandler(ctx as never, { id: "rec_1", status: "rejected" }),
+    ).rejects.toThrow(FORBIDDEN);
+    expect(ctx.db.patch).not.toHaveBeenCalled();
+  });
+
+  it("updateStatus rejects draft to approved", async () => {
+    const row: Row = { _id: "rec_1", userId: "user_1", ...recInput, status: "draft" };
+    const ctx = makeCtx([row], { subject: "user_1" });
+    await expect(
+      updateStatusHandler(ctx as never, { id: "rec_1", status: "approved" }),
+    ).rejects.toThrow(FORBIDDEN);
+    expect(ctx.db.patch).not.toHaveBeenCalled();
+  });
+
+  it("updateStatus rejects re-editing an already-decided record", async () => {
+    const approvedRow: Row = { _id: "rec_1", userId: "user_1", ...recInput, status: "approved" };
+    const ctx = makeCtx([approvedRow], { subject: "user_1" });
+    await expect(
+      updateStatusHandler(ctx as never, { id: "rec_1", status: "pending" }),
+    ).rejects.toThrow(FORBIDDEN);
+    expect(ctx.db.patch).not.toHaveBeenCalled();
   });
 
   it("updateStatus ignores records the caller does not own", async () => {

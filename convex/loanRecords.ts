@@ -1,6 +1,6 @@
 import { mutation, query, QueryCtx, MutationCtx } from "./_generated/server";
 import { v } from "convex/values";
-import { requireUserId } from "./helpers";
+import { requireUserId, FORBIDDEN } from "./helpers";
 import { Doc, Id } from "./_generated/dataModel";
 
 const recordFields = {
@@ -15,8 +15,6 @@ const recordFields = {
   status: v.union(
     v.literal("draft"),
     v.literal("pending"),
-    v.literal("approved"),
-    v.literal("rejected"),
   ),
   notes: v.optional(v.string()),
   resultSnapshot: v.optional(v.any()),
@@ -45,6 +43,9 @@ export async function createHandler(
   args: { record: LoanRecordInput },
 ) {
   const userId = await requireUserId(ctx);
+  if (args.record.status !== "draft" && args.record.status !== "pending") {
+    throw FORBIDDEN;
+  }
   return await ctx.db.insert("loanRecords", { ...args.record, userId });
 }
 
@@ -60,6 +61,11 @@ export async function updateStatusHandler(
   const userId = await requireUserId(ctx);
   const row = await ctx.db.get(args.id as Id<"loanRecords">);
   if (row && row.userId === userId) {
+    const allowed =
+      row.status === "draft" && args.status === "pending";
+    if (!allowed) {
+      throw FORBIDDEN;
+    }
     await ctx.db.patch(args.id as Id<"loanRecords">, { status: args.status });
   }
 }
