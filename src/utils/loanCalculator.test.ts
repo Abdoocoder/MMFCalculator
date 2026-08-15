@@ -95,7 +95,7 @@ describe('calculateLoan', () => {
 describe('generateReferenceNo', () => {
   it('matches the MDB-YYYYMMDD-HHmmss-<3digit> format', () => {
     const ref = generateReferenceNo();
-    expect(ref).toMatch(/^MDB-\d{8}-\d{6}-\d{3}$/);
+    expect(ref).toMatch(/^MDB-\d{8}-\d{6}-\d{4}$/);
     expect(ref).toContain(String(new Date().getFullYear()));
   });
 

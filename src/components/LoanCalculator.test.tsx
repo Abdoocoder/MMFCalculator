@@ -29,7 +29,7 @@ describe('LoanCalculator', () => {
     expect(onSaveRecord).toHaveBeenCalledTimes(1);
     const draft = onSaveRecord.mock.calls[0][0] as LoanRecord;
     expect(draft.status).toBe('draft');
-    expect(draft.referenceNo).toMatch(/^MDB-\d{8}-\d{6}-\d{3}$/);
+    expect(draft.referenceNo).toMatch(/^MDB-\d{8}-\d{6}-\d{4}$/);
     expect(draft.loanAmount).toBe(500);
     expect(draft.resultSnapshot?.profitRate).toBe(15);
     expect(screen.getByText(/تم حفظ الحسبة في قائمة السجلات/)).toBeInTheDocument();

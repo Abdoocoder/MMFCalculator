@@ -91,8 +91,8 @@ export function generateReferenceNo(now: Date = new Date()): string {
   const mm = pad(now.getMinutes());
   const ss = pad(now.getSeconds());
   // Timestamp component keeps references unique across calls within a year;
-  // the trailing 3-digit random only breaks ties within the same second.
-  const rand = Math.floor(100 + Math.random() * 900);
+  // the trailing 4-digit random only breaks ties within the same second.
+  const rand = Math.floor(1000 + Math.random() * 9000);
   return `MDB-${yyyy}${MM}${dd}-${HH}${mm}${ss}-${rand}`;
 }
 
