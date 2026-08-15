@@ -17,7 +17,10 @@ vi.mock('convex/react', async () => {
   const { getFunctionName } = await import('convex/server');
   return {
     useQuery: (ref: any) => {
-      if (getFunctionName(ref) === 'loanRecords:listMy') return authMocks.records;
+      const name = getFunctionName(ref);
+      if (name === 'loanRecords:listMy') return authMocks.records;
+      if (name === 'admin:listApplications') return [];
+      if (name === 'auth:getMyRole') return null;
       return authMocks.profile;
     },
     useMutation: () => vi.fn(),

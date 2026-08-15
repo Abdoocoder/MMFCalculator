@@ -39,11 +39,14 @@ const mocks = vi.hoisted(() => {
   return {
     profile: profileDoc as unknown as (typeof profileDoc & { _id: string }) | null,
     records: [] as unknown[],
+    role: null as string | null | undefined,
+    applications: [] as unknown[],
     mutations: {
       createRecord: vi.fn(),
       updateRecordStatus: vi.fn(),
       deleteRecord: vi.fn(),
       upsertProfile: vi.fn(),
+      setDecision: vi.fn(),
     },
   };
 });
@@ -52,7 +55,10 @@ vi.mock('convex/react', async () => {
   const { getFunctionName } = await import('convex/server');
   return {
     useQuery: (ref: any) => {
-      if (getFunctionName(ref) === 'loanRecords:listMy') return mocks.records;
+      const name = getFunctionName(ref);
+      if (name === 'loanRecords:listMy') return mocks.records;
+      if (name === 'auth:getMyRole') return mocks.role;
+      if (name === 'admin:listApplications') return mocks.applications;
       return mocks.profile;
     },
     useMutation: (ref: any) => {
@@ -60,6 +66,7 @@ vi.mock('convex/react', async () => {
       if (name === 'loanRecords:create') return mocks.mutations.createRecord;
       if (name === 'loanRecords:updateStatus') return mocks.mutations.updateRecordStatus;
       if (name === 'loanRecords:deleteDraft') return mocks.mutations.deleteRecord;
+      if (name === 'admin:setDecision') return mocks.mutations.setDecision;
       return mocks.mutations.upsertProfile;
     },
   };
@@ -95,6 +102,8 @@ beforeEach(() => {
     totalLoansPaid: 0,
   };
   mocks.records = [];
+  mocks.role = null;
+  mocks.applications = [];
   vi.stubGlobal('matchMedia', matchMediaMock);
 });
 
@@ -185,6 +194,89 @@ describe('App with Convex queries and mutations', () => {
     mocks.profile = null;
     render(<App />);
     expect(screen.getByText(/جارٍ تحميل الملف الشخصي/)).toBeInTheDocument();
+  });
+
+  it('lets an admin through the loading gate even without a member profile', () => {
+    mocks.profile = null;
+    mocks.role = 'admin';
+    render(<App />);
+    expect(screen.queryByText(/جارٍ تحميل الملف الشخصي/)).toBeNull();
+    expect(screen.getByRole('button', { name: 'مراجعة الطلبات' })).toBeInTheDocument();
+  });
+
+  it('does not show the admin tab for a non-admin member', () => {
+    mocks.role = 'member';
+    render(<App />);
+    expect(screen.queryByRole('button', { name: 'مراجعة الطلبات' })).toBeNull();
+  });
+
+  it('renders the admin review screen when an admin opens the tab', async () => {
+    mocks.role = 'admin';
+    mocks.applications = [
+      {
+        record: {
+          _id: 'rec_1',
+          referenceNo: 'MDB-2026-5001',
+          date: '2026-08-10',
+          productName: 'مرابحة الأجهزة الكهربائية والإلكترونية',
+          loanAmount: 500,
+          netIncome: 200,
+          durationYears: 1,
+          monthlyInstallment: 48.16,
+          totalWithInsurance: 577.88,
+          status: 'pending',
+        },
+        member: {
+          _id: 'mem_1',
+          membershipNo: 'MDB-1001',
+          fullName: 'أحمد محمود الشوابكة',
+          department: 'قسم الحاسوب',
+          phone: '0791112223',
+        },
+      },
+    ];
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: 'مراجعة الطلبات' }));
+
+    expect(screen.getAllByText('مراجعة الطلبات').length).toBeGreaterThan(0);
+    expect(screen.getByText('MDB-2026-5001')).toBeInTheDocument();
+  });
+
+  it('lets an admin decide an application from the review screen', async () => {
+    mocks.role = 'admin';
+    mocks.applications = [
+      {
+        record: {
+          _id: 'rec_1',
+          referenceNo: 'MDB-2026-5001',
+          date: '2026-08-10',
+          productName: 'مرابحة الأجهزة الكهربائية والإلكترونية',
+          loanAmount: 500,
+          netIncome: 200,
+          durationYears: 1,
+          monthlyInstallment: 48.16,
+          totalWithInsurance: 577.88,
+          status: 'pending',
+        },
+        member: {
+          _id: 'mem_1',
+          membershipNo: 'MDB-1001',
+          fullName: 'أحمد محمود الشوابكة',
+          department: 'قسم الحاسوب',
+          phone: '0791112223',
+        },
+      },
+    ];
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: 'مراجعة الطلبات' }));
+
+    await user.click(screen.getByRole('button', { name: /موافقة/ }));
+    expect(mocks.mutations.setDecision).toHaveBeenCalledWith({
+      id: 'rec_1',
+      status: 'approved',
+    });
   });
 
   it('renders the home dashboard with profile stats and navigates via quick actions', async () => {

@@ -1,20 +1,25 @@
 import React from 'react';
-import { Home, Calculator, FileText, User, Info, Building2 } from 'lucide-react';
+import { Home, Calculator, FileText, User, Info, Building2, ShieldCheck } from 'lucide-react';
 import { MemberProfile } from '../types';
 
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  profile: MemberProfile;
+  profile: MemberProfile | null;
+  isAdmin?: boolean;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, profile }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, profile, isAdmin = false }) => {
   const navItems = [
     { id: 'home', label: 'الرئيسية', icon: Home },
     { id: 'calculator', label: 'حاسبة المرابحة', icon: Calculator },
     { id: 'records', label: 'الطلبات والسجلات', icon: FileText },
     { id: 'profile', label: 'الملف الشخصي', icon: User },
   ];
+
+  if (isAdmin) {
+    navItems.splice(2, 0, { id: 'admin', label: 'مراجعة الطلبات', icon: ShieldCheck });
+  }
 
   return (
     <nav aria-label="التنقل الرئيسي للأعضاء" className="hidden md:flex flex-col rtl bg-surface dark:bg-canvas-dark text-teal dark:text-teal-light h-screen w-72 fixed right-0 top-0 z-30 border-l border-line dark:border-gray-800 shadow-md pt-16 transition-colors">
@@ -25,10 +30,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, profi
           </div>
           <div>
             <h3 className="font-bold text-primary dark:text-primary-soft text-base leading-tight">
-              {profile.fullName}
+              {profile ? profile.fullName : 'الإدارة'}
             </h3>
             <p className="text-xs text-ink-soft dark:text-gray-400 mt-1">
-              رقم العضوية: <span className="font-mono font-bold text-primary dark:text-primary-soft">{profile.membershipNo}</span>
+              رقم العضوية: <span className="font-mono font-bold text-primary dark:text-primary-soft">{profile ? profile.membershipNo : '—'}</span>
             </p>
           </div>
         </div>

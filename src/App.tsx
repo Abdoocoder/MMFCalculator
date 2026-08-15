@@ -11,10 +11,13 @@ import { LoanCalculator } from './components/LoanCalculator';
 import { HomeDashboard } from './components/HomeDashboard';
 import { ApplicationsHistory } from './components/ApplicationsHistory';
 import { ProfileSettings } from './components/ProfileSettings';
+import { AdminReview } from './components/AdminReview';
 import { PrintVoucherModal } from './components/PrintVoucherModal';
 import { MemberProfile, LoanRecord, CalculationInput, CalculationResult } from './types';
 import { calculateLoan, LOAN_PRODUCTS } from './utils/loanCalculator';
 import { useMemberData } from './hooks/useMemberData';
+import { useMyRole } from './hooks/useMyRole';
+import { useAdminData } from './hooks/useAdminData';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('calculator');
@@ -32,6 +35,13 @@ export default function App() {
 
   const { profile, records, saveRecord, deleteRecord, updateProfile, lastError, clearError } =
     useMemberData();
+  const { isAdmin } = useMyRole();
+  const {
+    applications: adminApplications,
+    decide: decideApplication,
+    lastError: adminError,
+    clearError: clearAdminError,
+  } = useAdminData();
 
   // Selected record for direct printing modal
   const [printModalRecord, setPrintModalRecord] = useState<LoanRecord | null>(null);
@@ -82,7 +92,9 @@ export default function App() {
 
   const printData = printModalRecord ? preparePrintData(printModalRecord) : null;
 
-  if (!profile) {
+  // An admin with no member profile must still reach the review tab, so the
+  // loading gate only applies to non-admins.
+  if (!profile && !isAdmin) {
     return (
       <div className="bg-canvas dark:bg-canvas-dark text-ink dark:text-ink-light min-h-screen flex items-center justify-center transition-colors font-tajawal">
         <p className="text-ink-soft dark:text-gray-400">جارٍ تحميل الملف الشخصي…</p>
@@ -117,6 +129,23 @@ export default function App() {
         </div>
       )}
 
+      {adminError && (
+        <div
+          role="alert"
+          className="fixed inset-x-4 top-4 z-50 md:inset-x-auto md:right-6 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg text-sm flex items-center justify-between gap-4"
+        >
+          <span>{adminError}</span>
+          <button
+            type="button"
+            onClick={clearAdminError}
+            aria-label="إغلاق رسالة الخطأ"
+            className="shrink-0 rounded-md p-1 text-white/80 hover:text-white hover:bg-surface/10 transition-colors cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Top Navigation Header */}
       <Header
         profile={profile}
@@ -133,6 +162,7 @@ export default function App() {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           profile={profile}
+          isAdmin={isAdmin}
         />
 
         {/* Main Content Area */}
@@ -142,7 +172,7 @@ export default function App() {
           tabIndex={-1}
           className="flex-1 md:pr-72 pb-24 md:pb-12 pt-2 transition-all focus:outline-none"
         >
-          {activeTab === 'home' && (
+          {activeTab === 'home' && profile && (
             <HomeDashboard
               profile={profile}
               records={records}
@@ -151,14 +181,14 @@ export default function App() {
             />
           )}
 
-          {activeTab === 'calculator' && (
+          {activeTab === 'calculator' && profile && (
             <LoanCalculator
               profile={profile}
               onSaveRecord={handleSaveRecord}
             />
           )}
 
-          {activeTab === 'records' && (
+          {activeTab === 'records' && profile && (
             <ApplicationsHistory
               records={records}
               onDeleteRecord={handleDeleteRecord}
@@ -166,7 +196,14 @@ export default function App() {
             />
           )}
 
-          {activeTab === 'profile' && (
+          {activeTab === 'admin' && isAdmin && (
+            <AdminReview
+              applications={adminApplications}
+              onDecide={decideApplication}
+            />
+          )}
+
+          {activeTab === 'profile' && profile && (
             <ProfileSettings
               profile={profile}
               onUpdateProfile={handleUpdateProfile}
@@ -180,6 +217,7 @@ export default function App() {
       <BottomNav
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        isAdmin={isAdmin}
       />
 
       {/* Footer for Desktop */}
@@ -216,7 +254,7 @@ export default function App() {
       </div>
 
       {/* Modal for printing saved records */}
-      {printModalRecord && printData && (
+      {printModalRecord && printData && profile && (
         <PrintVoucherModal
           isOpen
           onClose={() => setPrintModalRecord(null)}

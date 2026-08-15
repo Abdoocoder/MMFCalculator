@@ -1,18 +1,23 @@
 import React from 'react';
-import { Home, Calculator, History, Menu } from 'lucide-react';
+import { Home, Calculator, History, Menu, ShieldCheck } from 'lucide-react';
 
 interface BottomNavProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  isAdmin?: boolean;
 }
 
-export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab }) => {
+export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab, isAdmin = false }) => {
   const items = [
     { id: 'home', label: 'الرئيسية', icon: Home },
     { id: 'calculator', label: 'الحاسبة', icon: Calculator },
     { id: 'records', label: 'السجلات', icon: History },
     { id: 'profile', label: 'المزيد', icon: Menu },
   ];
+
+  if (isAdmin) {
+    items.splice(2, 0, { id: 'admin', label: 'المراجعة', icon: ShieldCheck });
+  }
 
   return (
     <nav aria-label="التنقل السفلي" className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-surface dark:bg-canvas-dark border-t border-line dark:border-gray-800 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] flex justify-around items-center h-16 px-2">

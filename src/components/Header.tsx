@@ -3,7 +3,7 @@ import { Settings, Bell, Sun, Moon } from 'lucide-react';
 import { MemberProfile } from '../types';
 
 interface HeaderProps {
-  profile: MemberProfile;
+  profile: MemberProfile | null;
   darkMode: boolean;
   setDarkMode: (val: boolean) => void;
   onOpenSettings: () => void;
