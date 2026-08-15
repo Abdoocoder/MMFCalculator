@@ -54,11 +54,18 @@ const mocks = vi.hoisted(() => {
 vi.mock('convex/react', async () => {
   const { getFunctionName } = await import('convex/server');
   return {
-    useQuery: (ref: any) => {
+    useQuery: (ref: any, ...args: any[]) => {
       const name = getFunctionName(ref);
       if (name === 'loanRecords:listMy') return mocks.records;
       if (name === 'auth:getMyRole') return mocks.role;
-      if (name === 'admin:listApplications') return mocks.applications;
+      if (name === 'admin:listApplications') {
+        // Mirrors the real server: admin queries are FORBIDDEN for non-admins
+        // (requireAdmin throws). The `"skip"` sentinel means the caller gated
+        // the query on isAdmin, so we short-circuit instead of throwing.
+        if (args[0] === 'skip') return undefined;
+        if (mocks.role !== 'admin') throw new Error('FORBIDDEN: admin only');
+        return mocks.applications;
+      }
       return mocks.profile;
     },
     useMutation: (ref: any) => {
@@ -208,6 +215,12 @@ describe('App with Convex queries and mutations', () => {
     mocks.role = 'member';
     render(<App />);
     expect(screen.queryByRole('button', { name: 'مراجعة الطلبات' })).toBeNull();
+  });
+
+  it('does not crash for a non-admin member when the admin query would throw on the server', () => {
+    mocks.role = 'member';
+    render(<App />);
+    expect(screen.getByText(/نسبة الربح المعتمدة/)).toBeInTheDocument();
   });
 
   it('renders the admin review screen when an admin opens the tab', async () => {

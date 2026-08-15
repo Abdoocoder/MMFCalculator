@@ -41,7 +41,7 @@ export default function App() {
     decide: decideApplication,
     lastError: adminError,
     clearError: clearAdminError,
-  } = useAdminData();
+  } = useAdminData(isAdmin);
 
   // Selected record for direct printing modal
   const [printModalRecord, setPrintModalRecord] = useState<LoanRecord | null>(null);

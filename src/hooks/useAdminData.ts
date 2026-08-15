@@ -15,10 +15,13 @@ export interface UseAdminDataResult {
 /**
  * Admin-only data hook for the review screen. `applications` is reactive
  * (Convex query); `decide` issues the admin approval/rejection mutation.
- * Callers must gate on `useMyRole().isAdmin` before rendering.
+ * `enabled` gates the query on `useMyRole().isAdmin`: when false, Convex's
+ * `"skip"` sentinel suppresses the query entirely, so non-admins never hit
+ * the server-side FORBIDDEN error (which `useQuery` would re-throw and
+ * blank the whole app, since there is no error boundary).
  */
-export function useAdminData(): UseAdminDataResult {
-  const applicationDocs = useQuery(api.admin.listApplications);
+export function useAdminData(enabled = true): UseAdminDataResult {
+  const applicationDocs = useQuery(api.admin.listApplications, enabled ? {} : 'skip');
   const setDecision = useMutation(api.admin.setDecision);
 
   const [lastError, setLastError] = useState<string | null>(null);

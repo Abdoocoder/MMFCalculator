@@ -37,7 +37,8 @@ const mocks = vi.hoisted(() => {
 vi.mock('convex/react', async () => {
   const { getFunctionName } = await import('convex/server');
   return {
-    useQuery: (ref: any) => {
+    useQuery: (ref: any, ...args: any[]) => {
+      if (args[0] === 'skip') return undefined;
       if (getFunctionName(ref) === 'admin:listApplications') return mocks.applications;
       return undefined;
     },
@@ -87,6 +88,12 @@ describe('useAdminData', () => {
   it('defaults to an empty list while applications are loading', () => {
     mocks.applications = undefined;
     const { result } = renderHook(() => useAdminData());
+    expect(result.current.applications).toEqual([]);
+  });
+
+  it('does not fetch applications when disabled', () => {
+    mocks.applications = [mocks.serverApplication];
+    const { result } = renderHook(() => useAdminData(false));
     expect(result.current.applications).toEqual([]);
   });
 
