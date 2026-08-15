@@ -25,5 +25,5 @@ export function toMemberProfileInput(profile: MemberProfile) {
 
 export function toLoanRecordInput(record: LoanRecord) {
   const { id: _id, ...rest } = record;
-  return rest;
+  return rest as Omit<LoanRecord, 'id' | 'status'> & { status: 'draft' | 'pending' };
 }

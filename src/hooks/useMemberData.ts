@@ -72,7 +72,8 @@ export function useMemberData(): UseMemberDataResult {
   const saveRecord = useCallback(
     async (record: LoanRecord) => {
       try {
-        await createRecord({ record: toLoanRecordInput(record) });
+        const input = toLoanRecordInput(record);
+        await createRecord({ record: input });
         setLastError(null);
       } catch {
         setLastError('تعذر حفظ الحسبة — يرجى المحاولة مرة أخرى.');

@@ -50,3 +50,20 @@ export type MemberProfile = Omit<
 > & {
   id: string;
 };
+
+export interface AdminApplicationMember {
+  membershipNo: string;
+  fullName: string;
+  department: string;
+  phone: string;
+}
+
+/**
+ * A non-draft loan application as returned by the admin `listApplications`
+ * query: the full loan record plus the owning member's profile fields used
+ * by the review screen. `member` is null when the owner has no profile.
+ */
+export interface AdminApplication {
+  record: LoanRecord;
+  member: AdminApplicationMember | null;
+}
