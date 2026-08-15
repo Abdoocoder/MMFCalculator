@@ -3,7 +3,7 @@
 **Date:** 2026-08-14
 **Reporter:** opencode
 **Severity:** Production outage (auth unavailable to all users)
-**Status:** RESOLVED — code fix committed (`4805143`), external config applied, verified live. `https://mmf-calculator.vercel.app/__clerk/` returns HTTP 200 (application/json) from the Clerk Frontend API; app is 200.
+**Status:** RESOLVED — code fix committed (`4805143`), external config applied, verified live. `https://mmf-calculator.vercel.app/__clerk/` returns HTTP 200 (application/json) from the Clerk Frontend API; app is 200. **2026-08-15 follow-up:** Convex JWT auth fully fixed & verified end-to-end (see below).
 
 ---
 
@@ -59,6 +59,23 @@ Clerk supports frontend API proxying: the app loads Clerk JS and makes all Front
 - Load `https://mmf-calculator.vercel.app` → Clerk JS loads via `/__clerk`, sign-in/sign-up work.
 - Verify Convex JWT auth: production instance's Convex integration + JWT template (`convex/auth.config.ts` reads `CLERK_JWT_ISSUER_DOMAIN`) accepts tokens.
 - Verify preview deploys still work (`CLERK_PROXY_URL`/`CLERK_SECRET_KEY` may need to be set for preview env too, or middleware falls back to `origin + /__clerk`).
+
+## 2026-08-15 follow-up: Convex JWT auth fixed (deferred post-fix checklist item)
+
+The post-fix checklist item "Verify Convex JWT auth" was found broken in production: sign-in succeeded but Convex returned `unauthenticated` from `members:createOnSignup` because the browser's `/__clerk/v1/client/sessions/{sid}/tokens/convex` call 404'd.
+
+Root causes fixed (all external config + Convex deploy, **no code changes**):
+
+1. **No `convex` JWT template existed** in the production Clerk instance (`GET /v1/jwt_templates` → `[]`). `ConvexProviderWithClerk` requests `getToken({ template: "convex" })` whenever `sessionClaims.aud !== "convex"` (`node_modules/convex/dist/esm/react-clerk/ConvexProviderWithClerk.js:28-36`). Created via `POST https://api.clerk.com/v1/jwt_templates` with `{"claims":{"aud":"convex","role":"{{user.public_metadata.role}}"},"lifetime":600,"allowed_clock_skew":5}`:
+   - Production: `jtmp_3HwZxcHUO48q2tNAUdUu1xvfBPK`
+   - Dev (`known-tahr-41`): `jtmp_3HwZyFEMfYDkKooelaPMlu0xmGV`
+2. **Issuer mismatch**: the JWT `iss` claim is the **proxy URL** `https://mmf-calculator.vercel.app/__clerk`, NOT `https://clerk.mmf-calculator.vercel.app`. Convex rejected the token (`No auth provider found matching the given token`). Fix: set the Convex deployment env `CLERK_JWT_ISSUER_DOMAIN=https://mmf-calculator.vercel.app/__clerk` (`npx convex env set`), then `npx convex deploy` to re-bundle `convex/auth.config.ts`.
+3. **Stale Convex deployment**: `https://sleek-squirrel-611.convex.cloud` only had 7 functions (missing `auth.js`/`admin.js`). Redeployed via `npx convex deploy` (deploy key `dev:sleek-squirrel-611|...`) → 11 functions live.
+4. **User role mismatch**: user `user_3HwWxRatvOfOLuLPbpNw1BULsN0` (abdooraf3@gmail.com) had `public_metadata.role = "isAdmin"` but the app checks `role === "admin"` (`src/hooks/useMyRole.ts:18`, `convex/helpers.ts:34`). Updated via `PATCH /v1/users/{user_id}/metadata` (the old `public_metadata` param on `PATCH /v1/users/{id}` is **deprecated**, returns 422).
+
+**Verification (end-to-end, all HTTP 200):** mint token `POST /v1/sessions/{sid}/tokens/convex` → decoded `iss=https://mmf-calculator.vercel.app/__clerk, aud=convex, role=admin` → `POST https://sleek-squirrel-611.convex.cloud/api/query` with `Authorization: Bearer <jwt>` for `auth:getMyRole` (returns `"admin"`) and `admin:listApplications` (returns `[]`).
+
+Note: the "production" backend is a Convex **dev deployment** (`dev/bdllh-bwsgyr`, URL `sleek-squirrel-611.convex.cloud`) that `VITE_CONVEX_URL` points at; `npx convex deploy` targets it via `CONVEX_DEPLOY_KEY` (deploy-key auth; `--prod`/`--deployment` flags are ignored while the deploy key env var is set). There is no separate production Convex project configured.
 
 ## Files touched
 
